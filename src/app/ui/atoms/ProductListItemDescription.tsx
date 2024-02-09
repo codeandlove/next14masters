@@ -12,7 +12,9 @@ export const ProductListItemDescription = ({
 		<div className="mt-2 w-full justify-between">
 			<div className="grid grid-cols-2">
 				<span className="text-sm text-slate-500">{category}</span>
-				<strong className="text-right text-sm">{name}</strong>
+				<h2 className="text-right">
+					<strong className="text-sm">{name}</strong>
+				</h2>
 			</div>
 			<span className="block w-full text-right font-bold">{formatPrice(price)}</span>
 		</div>
