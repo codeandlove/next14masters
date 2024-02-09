@@ -1,6 +1,6 @@
 import { ProductCoverImage } from "@/app/ui/atoms/ProductCoverImage";
 import { ProductListItemDescription } from "@/app/ui/atoms/ProductListItemDescription";
-import type { ProductItemType } from "@/app/ui/types";
+import { type ProductItemType } from "@/app/ui/types";
 
 type ProductListItemProps = {
 	product: ProductItemType;
