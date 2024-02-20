@@ -7,4 +7,12 @@ export type ProductItemType = {
 	category: string;
 	name: string;
 	price: number;
+	description: string;
+	longDescription: string;
+};
+
+export type ActiveLinkItemType = {
+	name: string;
+	url: string;
+	exact?: boolean;
 };
