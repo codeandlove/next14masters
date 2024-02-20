@@ -1,53 +1,21 @@
-import { ProductList } from "@/app/ui/organisms/ProductList";
-import type { ProductItemType } from "@/app/ui/types";
+import { getProducts } from "@/api/products";
+import { ProductList } from "@/ui/organisms/ProductList";
 
-const products: ProductItemType[] = [
-	{
-		id: "1",
-		coverImage: {
-			src: "/assets/sofa.webp",
-			alt: "Sofa",
+export const generateStaticParams = async () => {
+	const products = await getProducts({ pageNumber: "1" });
+	return products.map((product) => ({
+		params: {
+			productId: product.id,
 		},
-		category: "Furniture",
-		name: "Sofa",
-		price: 200,
-	},
-	{
-		id: "2",
-		coverImage: {
-			src: "/assets/chair.webp",
-			alt: "Chair",
-		},
-		category: "Furniture",
-		name: "Chair",
-		price: 50,
-	},
-	{
-		id: "3",
-		coverImage: {
-			src: "/assets/table.webp",
-			alt: "Table",
-		},
-		category: "Furniture",
-		name: "Table",
-		price: 100,
-	},
-	{
-		id: "4",
-		coverImage: {
-			src: "/assets/bed.webp",
-			alt: "Bed",
-		},
-		category: "Furniture",
-		name: "Bed",
-		price: 300,
-	},
-];
+	}));
+};
 
-export default function Home() {
+export default async function HomePage() {
+	const products = await getProducts({ pageNumber: "1" });
 	return (
-		<main className="flex min-h-screen flex-col items-center justify-between p-24">
+		<>
+			<div>Home page</div>
 			<ProductList products={products} />
-		</main>
+		</>
 	);
 }
