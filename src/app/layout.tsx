@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
+import { type CategoryItemFragment } from "@/gql/graphql";
+import { getCategories } from "@/api/graphql";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,16 +13,28 @@ export const metadata: Metadata = {
 	description: "Ferniture Store - The best furniture store in the world!",
 };
 
-const pageLinks: ActiveLinkItemType[] = [
+const primaryPageLinks: ActiveLinkItemType[] = [
 	{ name: "Home Page", url: "/", exact: true },
 	{ name: "All", url: "/products" },
 ];
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const storeCategories = await getCategories() as CategoryItemFragment[];
+
+	const pageLinks = [...primaryPageLinks];
+
+	if (storeCategories.length) {
+		const categoryLinks = storeCategories.map((category) => ({
+			name: category.name,
+			url: `/category/${category.slug}`,
+		}));
+		pageLinks.push(...categoryLinks);
+	}
+
 	return (
 		<html lang="en">
 			<body className={inter.className}>

@@ -1,23 +1,23 @@
-export type ProductItemType = {
-	id: string;
-	slug?: string;
-	coverImage: {
-		src: string;
-		alt: string;
-	};
-	category?: string;
-	name: string;
-	price: number;
-	description: string;
-	longDescription: string;
-};
+// export type ProductItemType = {
+// 	id: string;
+// 	slug?: string;
+// 	coverImage: {
+// 		src: string;
+// 		alt: string;
+// 	};
+// 	category?: string;
+// 	name: string;
+// 	price: number;
+// 	description: string;
+// 	longDescription: string;
+// };
 
 export type CategoryItemType = {
 	id: string;
 	name: string;
 	slug: string;
 	description: string;
-	products: {
+	products?: {
 		id: string;
 		name: string;
 		slug: string;

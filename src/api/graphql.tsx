@@ -4,8 +4,12 @@ import {
 	type ProductsGetListQuery,
 	CategoryGetBySlugDocument,
 	type CategoryGetBySlugQuery,
+	type ProductGetByIdQuery,
+	ProductGetByIdDocument,
+	type ProductItemFragment,
+	CategoriesGetItemsDocument,
+	type CategoriesGetItemsQuery,
 } from "@/gql/graphql";
-import type { CategoryItemType, ProductItemType } from "@/ui/types";
 
 const executeGraphql = async <TResult, TVariables>(
 	query: TypedDocumentString<TResult, TVariables>,
@@ -39,44 +43,37 @@ const executeGraphql = async <TResult, TVariables>(
 	return graphqlResponse.data;
 };
 
-export const getProductsListGQL = async (): Promise<ProductItemType[]> => {
+export const getProductsList = async (params: { pageNumber: string }) => {
+	const take = 20;
 	const productGraphqlResponse: ProductsGetListQuery = await executeGraphql(
 		ProductsGetListDocument,
-		{},
+		{ take: take, skip: Number(params.pageNumber) * take },
 	);
 
-	const data = productGraphqlResponse.products;
-
-	return data.map((product) => {
-		if (!product) {
-			throw new Error(`No product`);
-		}
-
-		return {
-			id: product.id,
-			name: product.name,
-			slug: product.slug,
-			coverImage: {
-				src: product.image,
-				alt: product.name,
-			},
-			categoryId: product.categoryId,
-			rating: product.rating,
-			price: product.price,
-			description: product.description,
-			longDescription: product.longDescription,
-		};
-	});
+	return productGraphqlResponse.products;
 };
 
-export const getCategoryBySlugGQL = async ({
-	slug,
-}: {
-	slug: string;
-}): Promise<CategoryItemType[]> => {
+export const getProductById = async ({ id }: { id: ProductItemFragment["id"] }) => {
+	const graphqlResponse: ProductGetByIdQuery = await executeGraphql(ProductGetByIdDocument, {
+		id: id,
+	});
+
+	return graphqlResponse.product;
+};
+
+export const getCategoryBySlug = async ({ slug }: { slug: string }) => {
 	const graphqlResponse: CategoryGetBySlugQuery = await executeGraphql(CategoryGetBySlugDocument, {
 		slug: slug,
 	});
+
+	return graphqlResponse.categories;
+};
+
+export const getCategories = async () => {
+	const graphqlResponse: CategoriesGetItemsQuery = await executeGraphql(
+		CategoriesGetItemsDocument,
+		{},
+	);
 
 	return graphqlResponse.categories;
 };

@@ -1,8 +1,10 @@
-import { getProducts } from "@/api/products";
+import { getProductsList } from "@/api/graphql";
+import type { ProductItemFragment } from "@/gql/graphql";
+import { PageTitle } from "@/ui/atoms/PageTitle";
 import { ProductList } from "@/ui/organisms/ProductList";
 
 export const generateStaticParams = async () => {
-	const products = await getProducts({ pageNumber: "1" });
+	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
 	return products.map((product) => ({
 		params: {
 			productId: product.id,
@@ -11,10 +13,10 @@ export const generateStaticParams = async () => {
 };
 
 export default async function HomePage() {
-	const products = await getProducts({ pageNumber: "1" });
+	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
 	return (
 		<>
-			<div>Home page</div>
+			<PageTitle>Home Page</PageTitle>
 			<ProductList products={products} />
 		</>
 	);
