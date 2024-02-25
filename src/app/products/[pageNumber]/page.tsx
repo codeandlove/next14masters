@@ -1,9 +1,10 @@
 import { Suspense } from "react";
-import { getProducts } from "@/api/products";
 import { Pagination } from "@/ui/molecules/Pagination";
 import { ProductList } from "@/ui/organisms/ProductList";
 import type { ActiveLinkItemType } from "@/ui/types";
-import { getProductsListGQL } from "@/api/graphql";
+import { getProductsList } from "@/api/graphql";
+import type { ProductItemFragment } from "@/gql/graphql";
+import { PageTitle } from "@/ui/atoms/PageTitle";
 
 const paginationCount = 20;
 
@@ -23,12 +24,14 @@ export const generateStaticParams = async () => {
 };
 
 export default async function ProductsListPage({ params }: { params: { pageNumber: string } }) {
-	const products = await getProducts({ pageNumber: params.pageNumber });
-	const products_gql = await getProductsListGQL();
+	const products = (await getProductsList({
+		pageNumber: params.pageNumber,
+	})) as ProductItemFragment[];
+
 	return (
 		<>
+			<PageTitle>All products</PageTitle>
 			<ProductList products={products} />
-			<ProductList products={products_gql} />
 			<Suspense>
 				<Pagination links={paginationLinks} />
 			</Suspense>

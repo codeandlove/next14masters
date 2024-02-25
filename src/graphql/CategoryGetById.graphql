@@ -1,9 +1,6 @@
 query CategoryGetById($id: ID!) {
 	category(id: $id) {
-		id
-		name
-		description
-		slug
+		...CategoryItem
 		products {
 			...ProductItem
 		}
