@@ -1,0 +1,5 @@
+query ProductsGetList {
+	products(take: 10, skip: 0) {
+		...ProductItem
+	}
+}

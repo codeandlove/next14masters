@@ -13,6 +13,11 @@ const nextConfig = {
 				destination: "/products/1",
 				permanent: true,
 			},
+			{
+				source: "/category/:slug",
+				destination: "/category/:slug/1",
+				permanent: false,
+			},
 		];
 	},
 };
