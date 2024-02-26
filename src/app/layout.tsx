@@ -23,7 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const storeCategories = await getCategories() as CategoryItemFragment[];
+	const storeCategories = (await getCategories({ pageNumber: "1" })) as CategoryItemFragment[];
 
 	const pageLinks = [...primaryPageLinks];
 

@@ -1,5 +1,11 @@
-query CategoriesGetItems {
-    categories {
-        ...CategoryItem
-    }
+query CategoriesGetItems($skip: Int!, $take: Int!) {
+	categories(skip: $skip, take: $take) {
+		data {
+			...CategoryItem
+		}
+		meta {
+			count
+			total
+		}
+	}
 }

@@ -4,7 +4,6 @@ fragment ProductItem on Product {
     slug
     description
     longDescription
-    categoryId
     price
     rating
     image

@@ -1,4 +1,4 @@
-query CategoryGetById($id: ID!) {
+query CategoryGetById($id: ID) {
 	category(id: $id) {
 		...CategoryItem
 		products {

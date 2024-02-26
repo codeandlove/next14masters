@@ -1,6 +1,6 @@
 fragment CategoryItem on Category {
-    id
-    name
-    slug
-    description
+	id
+	name
+	slug
+	description
 }

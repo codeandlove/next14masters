@@ -1,5 +1,17 @@
 query ProductsGetList($skip: Int!, $take: Int!) {
 	products(take: $take, skip: $skip) {
-		...ProductItem
+		data {
+			...ProductItem
+			categories {
+				...CategoryItem
+			}
+			collections {
+				...CollectionItem
+			}
+		}
+		meta {
+			count
+			total
+		}
 	}
 }
