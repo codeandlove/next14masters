@@ -1,0 +1,14 @@
+query CollectionsGetItems($skip: Int!, $take: Int!) {
+	collections(skip: $skip, take: $take) {
+		data {
+			id
+			name
+			slug
+			description
+		}
+		meta {
+			count
+			total
+		}
+	}
+}
