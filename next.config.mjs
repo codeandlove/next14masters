@@ -6,12 +6,26 @@ const nextConfig = {
 		typedRoutes: true,
 	},
 	pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+	images: {
+		remotePatterns: [
+			{
+				protocol: "https",
+				hostname: "picsum.photos",
+				pathname: "**",
+			},
+		],
+	},
 	async redirects() {
 		return [
 			{
 				source: "/products",
 				destination: "/products/1",
-				permanent: true,
+				permanent: false,
+			},
+			{
+				source: "/search",
+				destination: "/search/1",
+				permanent: false,
 			},
 			{
 				source: "/category/:slug",

@@ -1,4 +1,4 @@
-query ProductsGetList($skip: Int!, $take: Int!, $search: String) {
+query ProductsSearch($skip: Int!, $take: Int!, $search: String) {
 	products(take: $take, skip: $skip, search: $search) {
 		data {
 			...ProductItem

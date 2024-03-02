@@ -1,11 +1,19 @@
 fragment ProductItem on Product {
-    id
-    name
-    slug
-    description
-    longDescription
-    categoryId
-    price
-    rating
-    image
+	id
+	name
+	slug
+	description
+	longDescription
+	price
+	image
+	status
+	rating
+	categories {
+		name
+		slug
+	}
+	collections {
+		name
+		slug
+	}
 }

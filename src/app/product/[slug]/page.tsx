@@ -1,17 +1,19 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { getProductsList, getProductById } from "@/api/graphql";
+import { getProductsList, getProductBySlug } from "@/api/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { ProductCoverImage } from "@/ui/atoms/ProductCoverImage";
 import { formatPrice } from "@/ui/utils";
-import type { ProductItemFragment } from "@/gql/graphql";
+import { type ProductItemFragment } from "@/gql/graphql";
+import { ProductQtyInput } from "@/ui/atoms/ProductQtyInput";
 
 export const generateMetadata = async ({
 	params,
 }: {
-	params: { productId: string };
+	params: { slug: string };
 }): Promise<Metadata> => {
-	const product = await getProductById({ id: params.productId }) as ProductItemFragment;
+	const product = (await getProductBySlug({ slug: params.slug })) as ProductItemFragment;
+
 	return {
 		title: `${product.name}`,
 		description: `${product.description}`,
@@ -33,7 +35,7 @@ export const generateStaticParams = async () => {
 	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
 	return products.map((product) => ({
 		params: {
-			productId: product.id,
+			slug: product.slug,
 		},
 	}));
 };
@@ -42,10 +44,11 @@ export default async function ProductPage({
 	params,
 }: {
 	params: {
-		productId: string;
+		slug: string;
 	};
 }) {
-	const product = await getProductById({ id: params.productId }) as ProductItemFragment;
+	const product = (await getProductBySlug({ slug: params.slug })) as ProductItemFragment;
+	const relatedProducts = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
 
 	return (
 		<section className="w-full space-y-10">
@@ -55,17 +58,22 @@ export default async function ProductPage({
 				</div>
 				<div className="col-span-1 flex flex-col space-y-3">
 					<h1 className="max-w-96 text-2xl font-bold leading-snug md:mt-16">{product.name}</h1>
-					<div className="font-semibold">{product.categoryId}</div>
+					{product.categories[0] && (
+						<div className="font-semibold">{product.categories[0]?.name}</div>
+					)}
 					<div className="text-xl font-bold">{formatPrice(product.price)}</div>
 					<div className="text-gray-500">{product.description}</div>
-					<button type="button" className="btn btn-primary md:!mb-8 md:!mt-auto">
+					<div className="md:!mt-auto">
+						<ProductQtyInput />
+					</div>
+					<button type="button" className="btn btn-primary md:!mb-8">
 						Add to cart
 					</button>
 				</div>
 				<div className="col-span-2 my-8">{product.longDescription}</div>
 			</div>
 			<Suspense fallback={<div>Loading...</div>}>
-				<RelatedProducts />
+				<RelatedProducts products={relatedProducts} limit={4} />
 			</Suspense>
 		</section>
 	);

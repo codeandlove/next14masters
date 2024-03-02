@@ -3,7 +3,7 @@ import { ActiveLink } from "@/ui/atoms/ActiveLink";
 
 export const PageNavigation = ({ links }: { links: ActiveLinkItemType[] }) => {
 	return (
-		<nav className="flex items-center justify-between bg-slate-100">
+		<nav className="">
 			<div className="container mx-auto">
 				<ul className="flex items-center space-x-8 px-4">
 					{links.map((link, index) => (

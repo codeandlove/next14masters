@@ -3,8 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
-import { type CategoryItemFragment } from "@/gql/graphql";
 import { getCategories } from "@/api/graphql";
+import { PageSearchBar } from "@/ui/molecules/PageSearchBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const storeCategories = await getCategories() as CategoryItemFragment[];
+	const storeCategories = await getCategories({ pageNumber: "1" });
 
 	const pageLinks = [...primaryPageLinks];
 
@@ -38,11 +38,16 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<header>
-					<PageNavigation links={pageLinks} />
+				<header className="pb-32">
+					<div className="fixed inset-x-0 top-0 z-10 bg-slate-100 shadow-2xl shadow-black/10">
+						<div className="container mx-auto flex items-center justify-between">
+							<PageNavigation links={pageLinks} />
+							<PageSearchBar />
+						</div>
+					</div>
 				</header>
-				<main className="my-10 px-4">
-					<section className="container mx-auto flex min-h-screen flex-col items-center justify-between">
+				<main className="my-4 px-4">
+					<section className="container mx-auto flex min-h-screen flex-col items-center">
 						{children}
 					</section>
 				</main>

@@ -1,6 +1,0 @@
-fragment CategoryItem on Category {
-    id
-    name
-    slug
-    description
-}

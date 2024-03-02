@@ -1,12 +1,11 @@
-import { getProductsList } from "@/api/graphql";
+import {type ProductItemFragment } from "@/gql/graphql";
 import { ProductList } from "@/ui/organisms/ProductList";
 
-export const RelatedProducts = async () => {
-	const products = await getProductsList({ pageNumber: "1" });
+export const RelatedProducts = async ({ products, limit }: { products: ProductItemFragment[] | undefined, limit: number}) => {
 	return (
 		<section>
 			<h2 className="mb-4 text-center text-xl font-bold leading-snug">Related Products</h2>
-			<ProductList products={products.slice(-4)} />
+			{products && <ProductList products={products.slice(limit * -1)} />}
 		</section>
 	);
 };

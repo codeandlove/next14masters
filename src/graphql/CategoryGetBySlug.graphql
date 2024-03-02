@@ -1,7 +1,10 @@
-query CategoryGetBySlug($slug: String!) {
-	categories(where: { slug: $slug }) {
-		...CategoryItem
-		products {
+query CategoryGetBySlug($slug: String!, $skip: Int!, $take: Int!) {
+	category(slug: $slug) {
+		id
+		name
+		slug
+		description
+		products(skip: $skip, take: $take) {
 			...ProductItem
 		}
 	}

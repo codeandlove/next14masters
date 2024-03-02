@@ -1,37 +1,38 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ProductList } from "@/ui/organisms/ProductList";
-import { getCategoryBySlug } from "@/api/graphql";
+import { getCategories, getCategoryBySlug } from "@/api/graphql";
 import { type ProductItemFragment } from "@/gql/graphql";
 import { Pagination } from "@/ui/molecules/Pagination";
-import { type CategoryItemType, type ActiveLinkItemType } from "@/ui/types";
+import { type ActiveLinkItemType } from "@/ui/types";
 import { PageTitle } from "@/ui/atoms/PageTitle";
 
 const paginationCount = 20;
 
-// export const generateStaticParams = async () => {
+export const generateStaticParams = async () => {
+	const categories = await getCategories({pageNumber: "1"});
+	
+	const paginationLinks: ActiveLinkItemType[] = Array.from(
+		{ length: paginationCount },
+		(_, index) => {
+			return categories.map(category => 
+				({ name: `${index + 1}`, url: `/category/${category.slug}/${index + 1}`, exact: true }));
+		}
+	).reduce((p,n) => p.concat(n),[]);
 
-// 	const paginationLinks: ActiveLinkItemType[] = Array.from(
-// 		{ length: paginationCount },
-// 		(_, index) => {
-// 			return { name: `${index + 1}`, url: `/category/${parms.slug}/${index + 1}`, exact: true };
-// 		},
-// 	);
-
-// 	return paginationLinks.map((_, index) => ({
-// 		params: {
-// 			pageNumber: index + 1,
-// 		},
-// 	}));
-// };
+	return paginationLinks.map((_, index) => ({
+		params: {
+			pageNumber: index + 1,
+		},
+	}));
+};
 
 export default async function CategoryPage({
 	params,
 }: {
 	params: { slug: string; pageNumber: string };
 }) {
-	const categoryBySlug = await getCategoryBySlug({ slug: params.slug });
-	const category = categoryBySlug[0] as CategoryItemType;
+	const category = await getCategoryBySlug({ slug: params.slug, pageNumber: params.pageNumber });
 
 	if (!category) {
 		throw notFound();

@@ -9,7 +9,12 @@ import {
 	type ProductItemFragment,
 	CategoriesGetItemsDocument,
 	type CategoriesGetItemsQuery,
+	type CategoryItemFragment,
+	type ProductGetBySlugQuery,
+	ProductGetBySlugDocument,
 } from "@/gql/graphql";
+
+const take = 12;
 
 const executeGraphql = async <TResult, TVariables>(
 	query: TypedDocumentString<TResult, TVariables>,
@@ -43,14 +48,13 @@ const executeGraphql = async <TResult, TVariables>(
 	return graphqlResponse.data;
 };
 
-export const getProductsList = async (params: { pageNumber: string }) => {
-	const take = 20;
+export const getProductsList = async (params: { pageNumber: string; search?: string }) => {
 	const productGraphqlResponse: ProductsGetListQuery = await executeGraphql(
 		ProductsGetListDocument,
-		{ take: take, skip: Number(params.pageNumber) * take },
+		{ take: take, skip: (Number(params.pageNumber) - 1) * take, search: params.search },
 	);
 
-	return productGraphqlResponse.products;
+	return productGraphqlResponse.products.data;
 };
 
 export const getProductById = async ({ id }: { id: ProductItemFragment["id"] }) => {
@@ -61,19 +65,32 @@ export const getProductById = async ({ id }: { id: ProductItemFragment["id"] }) 
 	return graphqlResponse.product;
 };
 
-export const getCategoryBySlug = async ({ slug }: { slug: string }) => {
-	const graphqlResponse: CategoryGetBySlugQuery = await executeGraphql(CategoryGetBySlugDocument, {
+export const getProductBySlug = async ({ slug }: { slug: ProductItemFragment["slug"] }) => {
+	const graphqlResponse: ProductGetBySlugQuery = await executeGraphql(ProductGetBySlugDocument, {
 		slug: slug,
 	});
 
-	return graphqlResponse.categories;
+	return graphqlResponse.product;
+};
+export const getCategoryBySlug = async (params: {
+	slug: CategoryItemFragment["slug"];
+	pageNumber: string;
+}) => {
+	const graphqlResponse: CategoryGetBySlugQuery = await executeGraphql(CategoryGetBySlugDocument, {
+		slug: params.slug,
+		take: take,
+		skip: (Number(params.pageNumber) - 1) * take,
+	});
+
+	return graphqlResponse.category;
 };
 
-export const getCategories = async () => {
+export const getCategories = async (params: { pageNumber: string }) => {
+	const take = 20;
 	const graphqlResponse: CategoriesGetItemsQuery = await executeGraphql(
 		CategoriesGetItemsDocument,
-		{},
+		{ take: 20, skip: (Number(params.pageNumber) - 1) * take },
 	);
 
-	return graphqlResponse.categories;
+	return graphqlResponse.categories.data;
 };

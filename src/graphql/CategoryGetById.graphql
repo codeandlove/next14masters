@@ -1,7 +1,10 @@
-query CategoryGetById($id: ID!) {
+query CategoryGetById($id: ID!, $take: Int!, $skip: Int!) {
 	category(id: $id) {
-		...CategoryItem
-		products {
+		id
+		name
+		slug
+		description
+		products(take: $take, skip: $skip) {
 			...ProductItem
 		}
 	}
