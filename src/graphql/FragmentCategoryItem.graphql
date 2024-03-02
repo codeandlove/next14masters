@@ -1,4 +1,4 @@
-fragment CollectionItem on Collection {
+fragment CategoryItem on Category {
 	id
 	name
 	slug

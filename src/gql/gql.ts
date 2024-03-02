@@ -17,8 +17,10 @@ const documents = {
     "query CategoriesGetItems($skip: Int!, $take: Int!) {\n  categories(skip: $skip, take: $take) {\n    data {\n      id\n      name\n      slug\n      description\n    }\n    meta {\n      count\n      total\n    }\n  }\n}": types.CategoriesGetItemsDocument,
     "query CategoryGetById($id: ID!, $take: Int!, $skip: Int!) {\n  category(id: $id) {\n    id\n    name\n    slug\n    description\n    products(take: $take, skip: $skip) {\n      ...ProductItem\n    }\n  }\n}": types.CategoryGetByIdDocument,
     "query CategoryGetBySlug($slug: String!, $skip: Int!, $take: Int!) {\n  category(slug: $slug) {\n    id\n    name\n    slug\n    description\n    products(skip: $skip, take: $take) {\n      ...ProductItem\n    }\n  }\n}": types.CategoryGetBySlugDocument,
-    "fragment CollectionItem on Collection {\n  id\n  name\n  slug\n  description\n}": types.CollectionItemFragmentDoc,
+    "query CollectionGetBySlug($slug: String!, $skip: Int!, $take: Int!) {\n  collection(slug: $slug) {\n    id\n    name\n    slug\n    description\n    products(skip: $skip, take: $take) {\n      ...ProductItem\n    }\n  }\n}": types.CollectionGetBySlugDocument,
+    "query CollectionsGetItems($skip: Int!, $take: Int!) {\n  collections(skip: $skip, take: $take) {\n    data {\n      id\n      name\n      slug\n      description\n    }\n    meta {\n      count\n      total\n    }\n  }\n}": types.CollectionsGetItemsDocument,
     "fragment CategoryItem on Category {\n  id\n  name\n  slug\n  description\n}": types.CategoryItemFragmentDoc,
+    "fragment CollectionItem on Collection {\n  id\n  name\n  slug\n  description\n}": types.CollectionItemFragmentDoc,
     "fragment ProductItem on Product {\n  id\n  name\n  slug\n  description\n  longDescription\n  price\n  image\n  status\n  rating\n  categories {\n    name\n    slug\n  }\n  collections {\n    name\n    slug\n  }\n}": types.ProductItemFragmentDoc,
     "query ProductGetById($id: ID!) {\n  product(id: $id) {\n    ...ProductItem\n    categories {\n      ...CategoryItem\n    }\n    collections {\n      ...CollectionItem\n    }\n  }\n}": types.ProductGetByIdDocument,
     "query ProductGetBySlug($slug: String!) {\n  product(slug: $slug) {\n    ...ProductItem\n    categories {\n      ...CategoryItem\n    }\n    collections {\n      ...CollectionItem\n    }\n  }\n}": types.ProductGetBySlugDocument,
@@ -41,11 +43,19 @@ export function graphql(source: "query CategoryGetBySlug($slug: String!, $skip: 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "fragment CollectionItem on Collection {\n  id\n  name\n  slug\n  description\n}"): typeof import('./graphql').CollectionItemFragmentDoc;
+export function graphql(source: "query CollectionGetBySlug($slug: String!, $skip: Int!, $take: Int!) {\n  collection(slug: $slug) {\n    id\n    name\n    slug\n    description\n    products(skip: $skip, take: $take) {\n      ...ProductItem\n    }\n  }\n}"): typeof import('./graphql').CollectionGetBySlugDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query CollectionsGetItems($skip: Int!, $take: Int!) {\n  collections(skip: $skip, take: $take) {\n    data {\n      id\n      name\n      slug\n      description\n    }\n    meta {\n      count\n      total\n    }\n  }\n}"): typeof import('./graphql').CollectionsGetItemsDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "fragment CategoryItem on Category {\n  id\n  name\n  slug\n  description\n}"): typeof import('./graphql').CategoryItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "fragment CollectionItem on Collection {\n  id\n  name\n  slug\n  description\n}"): typeof import('./graphql').CollectionItemFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
