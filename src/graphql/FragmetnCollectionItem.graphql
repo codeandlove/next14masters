@@ -1,6 +1,0 @@
-fragment CollectionItem on Collection {
-    id
-    name
-    slug
-    description
-}

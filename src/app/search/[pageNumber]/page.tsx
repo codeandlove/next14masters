@@ -15,22 +15,27 @@ const paginationLinks: ActiveLinkItemType[] = Array.from(
 	},
 );
 
-export const generateStaticParams = async () => {
-	return paginationLinks.map((_, index) => ({
-		params: {
-			pageNumber: index + 1,
-		},
-	}));
-};
+export default async function SearchPage({
+	params,
+	searchParams,
+}: {
+	params: { pageNumber: string };
+	searchParams: { query: string };
+}) {
+	let products: ProductItemFragment[] | undefined;
 
-export default async function ProductsListPage({ params }: { params: { pageNumber: string } }) {
-	const products = (await getProductsList({
-		pageNumber: params.pageNumber,
-	})) as ProductItemFragment[];
+	try {
+		products = (await getProductsList({
+			pageNumber: params.pageNumber,
+			search: searchParams.query,
+		})) as ProductItemFragment[];
+	} catch (error) {
+		return <p>There was an error fetching the products.</p>;
+	}
 
 	return (
 		<>
-			<PageTitle>All Products</PageTitle>
+			<PageTitle>{searchParams.query ? `Search results` : `All products`}</PageTitle>
 			<Suspense>
 				{products && <ProductList products={products} />}
 				<Pagination links={paginationLinks} />
