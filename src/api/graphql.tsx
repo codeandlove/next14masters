@@ -12,6 +12,11 @@ import {
 	type CategoryItemFragment,
 	type ProductGetBySlugQuery,
 	ProductGetBySlugDocument,
+	CollectionsGetItemsDocument,
+	type CollectionsGetItemsQuery,
+	CollectionGetBySlugDocument,
+	type CollectionGetBySlugQuery,
+	type CollectionItemFragment,
 } from "@/gql/graphql";
 
 const take = 12;
@@ -72,6 +77,7 @@ export const getProductBySlug = async ({ slug }: { slug: ProductItemFragment["sl
 
 	return graphqlResponse.product;
 };
+
 export const getCategoryBySlug = async (params: {
 	slug: CategoryItemFragment["slug"];
 	pageNumber: string;
@@ -85,6 +91,24 @@ export const getCategoryBySlug = async (params: {
 	return graphqlResponse.category;
 };
 
+export const getCollectionBySlug = async (params: {
+	slug: CollectionItemFragment["slug"];
+	pageNumber: string;
+}) => {
+	const graphqlResponse: CollectionGetBySlugQuery = await executeGraphql(
+		CollectionGetBySlugDocument,
+		{
+			slug: params.slug,
+			take: take,
+			skip: (Number(params.pageNumber) - 1) * take,
+		},
+	);
+
+	return graphqlResponse.collection;
+};
+
+getCollectionBySlug;
+
 export const getCategories = async (params: { pageNumber: string }) => {
 	const take = 20;
 	const graphqlResponse: CategoriesGetItemsQuery = await executeGraphql(
@@ -93,4 +117,14 @@ export const getCategories = async (params: { pageNumber: string }) => {
 	);
 
 	return graphqlResponse.categories.data;
+};
+
+export const getCollections = async (params: { pageNumber: string }) => {
+	const take = 20;
+	const graphqlResponse: CollectionsGetItemsQuery = await executeGraphql(
+		CollectionsGetItemsDocument,
+		{ take: 20, skip: (Number(params.pageNumber) - 1) * take },
+	);
+
+	return graphqlResponse.collections.data;
 };

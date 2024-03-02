@@ -31,8 +31,8 @@ export default async function ProductsListPage({ params }: { params: { pageNumbe
 	return (
 		<>
 			<PageTitle>All Products</PageTitle>
+			<ProductList products={products} />
 			<Suspense>
-				{products && <ProductList products={products} />}
 				<Pagination links={paginationLinks} />
 			</Suspense>
 		</>

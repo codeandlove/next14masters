@@ -22,14 +22,19 @@ const nextConfig = {
 				destination: "/products/1",
 				permanent: false,
 			},
+			// {
+			// 	source: "/search",
+			// 	destination: "/search/1",
+			// 	permanent: false,
+			// },
 			{
-				source: "/search",
-				destination: "/search/1",
+				source: "/categories/:slug",
+				destination: "/categories/:slug/1",
 				permanent: false,
 			},
 			{
-				source: "/category/:slug",
-				destination: "/category/:slug/1",
+				source: "/collections/:slug",
+				destination: "/collections/:slug/1",
 				permanent: false,
 			},
 		];
