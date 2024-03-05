@@ -4,6 +4,7 @@ import WithMDX from "@next/mdx";
 const nextConfig = {
 	experimental: {
 		typedRoutes: true,
+		mdxRs: true,
 	},
 	pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 	images: {
@@ -15,6 +16,9 @@ const nextConfig = {
 			},
 		],
 	},
+	env: {
+		GRAPHQL_URL: process.env.GRAPHQL_URL,
+	},
 	async redirects() {
 		return [
 			{
@@ -22,11 +26,6 @@ const nextConfig = {
 				destination: "/products/1",
 				permanent: false,
 			},
-			// {
-			// 	source: "/search",
-			// 	destination: "/search/1",
-			// 	permanent: false,
-			// },
 			{
 				source: "/categories/:slug",
 				destination: "/categories/:slug/1",

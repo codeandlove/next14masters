@@ -1,0 +1,6 @@
+mutation CartRemoveProduct($orderId: ID!, $productId: ID!) {
+	removeOrderItem(orderId: $orderId, productId: $productId) {
+		id
+		status
+	}
+}
