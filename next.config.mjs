@@ -7,6 +7,7 @@ const nextConfig = {
 		mdxRs: true,
 	},
 	pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
+	staticPageGenerationTimeout: 1200,
 	images: {
 		remotePatterns: [
 			{
