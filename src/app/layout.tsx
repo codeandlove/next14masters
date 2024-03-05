@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Suspense } from "react";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
 import { getCategories, getCollections } from "@/api/graphql";
 import { PageSearchBar } from "@/ui/molecules/PageSearchBar";
 import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
+import { CartIcon } from "@/ui/atoms/CartIcon";
+import { getOrCreateCart } from "@/api/cart";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Super Store",
-	description: "Super Store - The best furniture store in the world!",
+	description: "Super Store - The best super store in the world!",
 };
 
 const primaryPageLinks: ActiveLinkItemType[] = [
@@ -46,6 +49,8 @@ export default async function RootLayout({
 		collectionsLinks.push(...collectionLinks);
 	}
 
+	const cart = await getOrCreateCart();
+
 	return (
 		<html lang="en">
 			<body className={inter.className}>
@@ -54,6 +59,9 @@ export default async function RootLayout({
 						<div className="container mx-auto flex items-center justify-between">
 							<PageNavigation links={pageLinks} />
 							<PageSearchBar />
+							<Suspense>
+								<CartIcon cart={cart} />
+							</Suspense>
 						</div>
 					</div>
 				</header>

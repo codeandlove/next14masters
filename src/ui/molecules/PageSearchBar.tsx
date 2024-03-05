@@ -38,7 +38,7 @@ export const PageSearchBar = () => {
 
 	return (
 		<div
-			className="flex items-center justify-between"
+			className="ml-auto mr-2 flex items-center justify-between"
 			role="searchbox"
 			tabIndex={0}
 			aria-label="search"

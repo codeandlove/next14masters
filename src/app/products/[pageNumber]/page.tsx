@@ -15,13 +15,13 @@ const paginationLinks: ActiveLinkItemType[] = Array.from(
 	},
 );
 
-export const generateStaticParams = async () => {
-	return paginationLinks.map((_, index) => ({
-		params: {
-			pageNumber: index + 1,
-		},
-	}));
-};
+// export const generateStaticParams = async () => {
+// 	return paginationLinks.map((_, index) => ({
+// 		params: {
+// 			pageNumber: index + 1,
+// 		},
+// 	}));
+// };
 
 export default async function ProductsListPage({ params }: { params: { pageNumber: string } }) {
 	const products = (await getProductsList({

@@ -14,4 +14,8 @@
 	.btn.btn-secondary {
 		@apply border bg-slate-200 text-black hover:bg-slate-100;
 	}
+
+	[enabled] {
+		@apply pointer-events-none cursor-none opacity-25;
+	}
 }

@@ -1,11 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { revalidateTag } from "next/cache";
 import { getProductsList, getProductBySlug } from "@/api/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { ProductCoverImage } from "@/ui/atoms/ProductCoverImage";
 import { formatPrice } from "@/ui/utils";
 import { type ProductItemFragment } from "@/gql/graphql";
 import { ProductQtyInput } from "@/ui/atoms/ProductQtyInput";
+import { AddToCartButton } from "@/ui/atoms/AddToCartButton";
+import { addToCart } from "@/ui/actions";
+import { getOrCreateCart } from "@/api/cart";
 
 export const generateMetadata = async ({
 	params,
@@ -31,14 +36,14 @@ export const generateMetadata = async ({
 	};
 };
 
-export const generateStaticParams = async () => {
-	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
-	return products.map((product) => ({
-		params: {
-			slug: product.slug,
-		},
-	}));
-};
+// export const generateStaticParams = async () => {
+// 	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
+// 	return products.map((product) => ({
+// 		params: {
+// 			slug: product.slug,
+// 		},
+// 	}));
+// };
 
 export default async function ProductPage({
 	params,
@@ -49,6 +54,19 @@ export default async function ProductPage({
 }) {
 	const product = (await getProductBySlug({ slug: params.slug })) as ProductItemFragment;
 	const relatedProducts = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
+
+	if (!product) {
+		notFound();
+	}
+
+	async function addToCartAction(productId: string) {
+		"use server";
+		const cart = await getOrCreateCart();
+
+		await addToCart(cart.id, productId, 1).finally(() => {
+			revalidateTag("cart");
+		});
+	}
 
 	return (
 		<section className="w-full space-y-10">
@@ -63,12 +81,19 @@ export default async function ProductPage({
 					)}
 					<div className="text-xl font-bold">{formatPrice(product.price)}</div>
 					<div className="text-gray-500">{product.description}</div>
-					<div className="md:!mt-auto">
-						<ProductQtyInput />
-					</div>
-					<button type="button" className="btn btn-primary md:!mb-8">
-						Add to cart
-					</button>
+					<Suspense>
+						<div className="md:!mt-auto">
+							<ProductQtyInput />
+						</div>
+						<form
+							action={async () => {
+								"use server";
+								await addToCartAction(product.id);
+							}}
+						>
+							<AddToCartButton />
+						</form>
+					</Suspense>
 				</div>
 				<div className="col-span-2 my-8">{product.longDescription}</div>
 			</div>
