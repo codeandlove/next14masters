@@ -1,13 +1,9 @@
-"use client";
-
 import Link from "next/link";
-import { type CartOrderItemFragment, type CartOrderFragment } from "@/gql/graphql";
+import { getCartFromCookies } from "@/api/cart";
 
-export async function CartIcon({
-	cart,
-}: {
-	cart: CartOrderFragment & { orderItems?: CartOrderItemFragment[] };
-}) {
+export async function CartIcon() {
+	const cart = await getCartFromCookies();
+
 	let quantity: number = 0;
 
 	if (cart && cart.orderItems) {

@@ -8,7 +8,6 @@ import { getCategories, getCollections } from "@/api/graphql";
 import { PageSearchBar } from "@/ui/molecules/PageSearchBar";
 import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 import { CartIcon } from "@/ui/atoms/CartIcon";
-import { getOrCreateCart } from "@/api/cart";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -49,8 +48,6 @@ export default async function RootLayout({
 		collectionsLinks.push(...collectionLinks);
 	}
 
-	const cart = await getOrCreateCart();
-
 	return (
 		<html lang="en">
 			<body className={inter.className}>
@@ -60,7 +57,7 @@ export default async function RootLayout({
 							<PageNavigation links={pageLinks} />
 							<PageSearchBar />
 							<Suspense>
-								<CartIcon cart={cart} />
+								<CartIcon />
 							</Suspense>
 						</div>
 					</div>
