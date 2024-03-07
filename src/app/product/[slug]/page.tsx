@@ -36,14 +36,14 @@ export const generateMetadata = async ({
 	};
 };
 
-export const generateStaticParams = async () => {
-	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
-	return products.map((product) => ({
-		params: {
-			slug: product.slug,
-		},
-	}));
-};
+// export const generateStaticParams = async () => {
+// 	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
+// 	return products.map((product) => ({
+// 		params: {
+// 			slug: product.slug,
+// 		},
+// 	}));
+// };
 
 export default async function ProductPage({
 	params,
@@ -70,7 +70,7 @@ export default async function ProductPage({
 
 	return (
 		<section className="w-full space-y-10">
-			<div className="mx-auto max-w-6xl gap-x-8 md:grid md:grid-cols-2">
+			<div className="gap-x-8 md:grid md:grid-cols-2">
 				<div className="mb-8 md:m-0">
 					<ProductCoverImage src={product.image} alt="" />
 				</div>

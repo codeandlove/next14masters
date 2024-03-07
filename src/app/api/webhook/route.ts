@@ -3,19 +3,18 @@ import { type NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest): Promise<Response> {
 	const json: unknown = await request.json();
-
+	
 	if (
 		typeof json === "object" &&
 		json &&
-		"productId" in json &&
-		typeof json.productId === "string"
+		"slug" in json &&
+		typeof json.slug === "string"
 	) {
-		json.productId;
-		revalidatePath(`/product/${json.productId}`);
+		revalidatePath(`/product/${json.slug}`);
 		revalidatePath(`/products`);
 
 		return NextResponse.json({ message: "ok" }, { status: 201 });
 	}
 
-	return NextResponse.json({ message: "Invalid body" }, { status: 400 });
+	return NextResponse.json({ message: `Invalid body` }, { status: 400 });
 }

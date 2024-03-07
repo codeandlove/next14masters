@@ -3,3 +3,5 @@ export type ActiveLinkItemType = {
 	url: string;
 	exact?: boolean;
 };
+
+export type SortByKey = "id" | "price" | "name" | "rating" | undefined;
