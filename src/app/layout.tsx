@@ -4,9 +4,8 @@ import "./globals.css";
 import { Suspense } from "react";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
-import { getCategories, getCollections } from "@/api/graphql";
+import { getCategories } from "@/api/graphql";
 import { PageSearchBar } from "@/ui/molecules/PageSearchBar";
-import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 import { CartIcon } from "@/ui/atoms/CartIcon";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -23,14 +22,13 @@ const primaryPageLinks: ActiveLinkItemType[] = [
 
 export default async function RootLayout({
 	children,
+	modal,
 }: Readonly<{
 	children: React.ReactNode;
+	modal?: React.ReactNode;
 }>) {
 	const storeCategories = await getCategories({ pageNumber: "1" });
-	const storeCollections = await getCollections({ pageNumber: "1" });
-
 	const pageLinks = [...primaryPageLinks];
-	const collectionsLinks: ActiveLinkItemType[] = [];
 
 	if (storeCategories.length) {
 		const categoryLinks = storeCategories.map((category) => ({
@@ -38,14 +36,6 @@ export default async function RootLayout({
 			url: `/categories/${category.slug}`,
 		}));
 		pageLinks.push(...categoryLinks);
-	}
-
-	if (storeCollections.length) {
-		const collectionLinks = storeCollections.map((collection) => ({
-			name: collection.name,
-			url: `/collections/${collection.slug}`,
-		}));
-		collectionsLinks.push(...collectionLinks);
 	}
 
 	return (
@@ -63,14 +53,14 @@ export default async function RootLayout({
 					</div>
 				</header>
 				<main className="my-4 px-4">
-					<CollectionsNavigation links={collectionsLinks} />
 					<section className="container mx-auto flex min-h-screen flex-col items-center">
 						{children}
 					</section>
 				</main>
 				<footer className="container mx-auto p-8 text-center text-sm text-gray-500">
-					<p className="text-center text-sm">&copy; 2024 Ferniture Store</p>
+					<p className="text-center text-sm">&copy; 2024 Super Store</p>
 				</footer>
+				{modal}
 			</body>
 		</html>
 	);

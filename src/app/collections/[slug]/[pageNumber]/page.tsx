@@ -2,34 +2,36 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { type Metadata } from "next";
 import { ProductList } from "@/ui/organisms/ProductList";
-import { getCollectionBySlug, getCollections } from "@/api/graphql";
+import { getCollectionBySlug } from "@/api/graphql";
 import { type ProductItemFragment } from "@/gql/graphql";
 import { Pagination } from "@/ui/molecules/Pagination";
-import { type ActiveLinkItemType } from "@/ui/types";
+import { type SortByKey, type ActiveLinkItemType } from "@/ui/types";
 import { PageTitle } from "@/ui/atoms/PageTitle";
+import { SortBy } from "@/ui/atoms/SortBy";
+import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 
 const paginationCount = 20;
 
-export const generateStaticParams = async () => {
-	const collections = await getCollections({ pageNumber: "1" });
+// export const generateStaticParams = async () => {
+// 	const collections = await getCollections({ pageNumber: "1" });
 
-	const paginationLinks: ActiveLinkItemType[] = Array.from(
-		{ length: paginationCount },
-		(_, index) => {
-			return collections.map((collection) => ({
-				name: `${index + 1}`,
-				url: `/collections/${collection.slug}/${index + 1}`,
-				exact: true,
-			}));
-		},
-	).reduce((p, n) => p.concat(n), []);
+// 	const paginationLinks: ActiveLinkItemType[] = Array.from(
+// 		{ length: paginationCount },
+// 		(_, index) => {
+// 			return collections.map((collection) => ({
+// 				name: `${index + 1}`,
+// 				url: `/collections/${collection.slug}/${index + 1}`,
+// 				exact: true,
+// 			}));
+// 		},
+// 	).reduce((p, n) => p.concat(n), []);
 
-	return paginationLinks.map((_, index) => ({
-		params: {
-			pageNumber: index + 1,
-		},
-	}));
-};
+// 	return paginationLinks.map((_, index) => ({
+// 		params: {
+// 			pageNumber: index + 1,
+// 		},
+// 	}));
+// };
 
 export const generateMetadata = async ({
 	params,
@@ -51,8 +53,10 @@ export const generateMetadata = async ({
 
 export default async function CollectionPage({
 	params,
+	searchParams,
 }: {
 	params: { slug: string; pageNumber: string };
+	searchParams: { sortby?: SortByKey };
 }) {
 	const collection = await getCollectionBySlug({
 		slug: params.slug,
@@ -83,7 +87,9 @@ export default async function CollectionPage({
 	return (
 		<>
 			<PageTitle>{collection.name}</PageTitle>
-			<ProductList products={products} />
+			<CollectionsNavigation />
+			<SortBy />
+			<ProductList products={products} sortby={searchParams.sortby || undefined} />
 			<Suspense>
 				<Pagination links={paginationLinks} />
 			</Suspense>

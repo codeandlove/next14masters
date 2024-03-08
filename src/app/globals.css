@@ -7,6 +7,10 @@
 		@apply rounded px-8 py-4;
 	}
 
+	.btn.btn-small {
+		@apply px-2 py-1 text-xs;
+	}
+
 	.btn.btn-primary {
 		@apply bg-blue-500 text-white hover:bg-blue-400;
 	}

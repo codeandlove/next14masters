@@ -21,7 +21,7 @@ export const OrderItemQuantity = ({
 		<form className="flex items-center">
 			<button
 				type="submit"
-				className="btn btn-secondary flex h-10 w-10 items-center justify-center p-1"
+				className="btn btn-small btn-secondary flex items-center justify-center"
 				formAction={async () => {
 					const qty: number = optimisticQuantity > 1 ? optimisticQuantity - 1 : 1;
 					setOptimisticQuantity(qty);
@@ -33,7 +33,7 @@ export const OrderItemQuantity = ({
 			<div className="p-4">{optimisticQuantity}</div>
 			<button
 				type="submit"
-				className="btn btn-secondary flex h-10 w-10 items-center justify-center p-1"
+				className="btn btn-small btn-secondary flex items-center justify-center"
 				formAction={async () => {
 					const qty: number = optimisticQuantity + 1;
 					setOptimisticQuantity(qty);

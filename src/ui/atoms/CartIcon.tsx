@@ -12,5 +12,9 @@ export async function CartIcon() {
 		}
 	}
 
-	return <Link href="/cart">Cart ({quantity})</Link>;
+	return (
+		<div className="mx-4">
+			<Link href="/minicart">Cart ({quantity})</Link>
+		</div>
+	);
 }

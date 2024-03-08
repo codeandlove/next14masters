@@ -29,6 +29,7 @@ import {
 	type CartRemoveProductMutation,
 	CartRemoveProductDocument,
 } from "@/gql/graphql";
+import { sortByKey } from "@/ui/utils";
 
 const take = 12;
 
@@ -80,7 +81,7 @@ export const getProductsList = async (params: { pageNumber: string; search?: str
 		variables: { take: take, skip: (Number(params.pageNumber) - 1) * take, search: params.search },
 	});
 
-	return productGraphqlResponse.products.data;
+	return sortByKey(productGraphqlResponse.products.data, 'id');
 };
 
 export const getProductById = async ({ id }: { id: ProductItemFragment["id"] }) => {
@@ -114,7 +115,7 @@ export const getCategoryBySlug = async (params: {
 		},
 	});
 
-	return graphqlResponse.category;
+	return {...graphqlResponse.category, products: sortByKey(graphqlResponse.category.products, 'id')};
 };
 
 export const getCollectionBySlug = async (params: {
@@ -130,7 +131,7 @@ export const getCollectionBySlug = async (params: {
 		},
 	});
 
-	return graphqlResponse.collection;
+	return {...graphqlResponse.collection, products: sortByKey(graphqlResponse.collection.products, 'id')};
 };
 
 export const getCategories = async (params: { pageNumber: string }) => {
@@ -164,7 +165,7 @@ export const getCartDataById = async ({ id }: { id: CartOrderFragment["id"] }) =
 		},
 	});
 
-	return graphqlResponse.order;
+	return {...graphqlResponse.order, orderItems: sortByKey(graphqlResponse.order.orderItems, 'id')};
 };
 
 export const createNewCart = async () => {
@@ -235,3 +236,4 @@ export const removeOrderItem = async ({
 
 	return graphqlResponse.removeOrderItem;
 };
+
