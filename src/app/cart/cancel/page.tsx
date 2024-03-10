@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Stripe from "stripe";
 
-export default async function CartSuccessPage({
+export default async function CartCancelPage({
 	searchParams,
 }: {
 	searchParams: { sessionId?: string };
@@ -21,5 +21,5 @@ export default async function CartSuccessPage({
 
 	const session = await stripe.checkout.sessions.retrieve(searchParams.sessionId);
 
-	return <div>{session.payment_status}</div>;
+	return <div>Canceled {session.payment_status}</div>;
 }

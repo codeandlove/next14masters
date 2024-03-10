@@ -1,3 +1,4 @@
+import { ShoppingBag } from "lucide-react";
 import { CloseModal } from "@/ui/atoms/CloseModal";
 import { ModalOverlay } from "@/ui/atoms/ModalOverlay";
 import { GotoCart } from "@/ui/atoms/GotoCart";
@@ -14,8 +15,8 @@ export default async function ModalCart() {
 		<>
 			<div className="container fixed inset-y-0 right-0 z-30 flex w-full max-w-sm flex-col bg-white p-8 shadow-xl">
 				<CloseModal />
-				<h2 className="border-b pb-2 text-left text-xl font-bold">
-					Cart ({cart?.orderItems.length || 0})
+				<h2 className="border-b pb-2 text-left text-xl font-bold flex items-center">
+					<ShoppingBag className="mr-1" /> Cart ({cart?.orderItems.length || 0})
 				</h2>
 				{cart && cart.orderItems ? (
 					<>

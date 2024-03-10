@@ -58,40 +58,38 @@ export default async function CartPage() {
 										orderItems.map((item, index) => {
 											const { product } = item;
 											return (
-												<>
-													<tr
-														key={`product-item-${index}`}
-														className="border-b border-gray-200 dark:border-gray-700"
+												<tr
+													key={`product-item-${index}`}
+													className="border-b border-gray-200 dark:border-gray-700"
+												>
+													<th
+														scope="row"
+														className="bg-gray-50 px-6 py-4 font-medium text-gray-900 dark:bg-gray-800 dark:text-white"
 													>
-														<th
-															scope="row"
-															className="bg-gray-50 px-6 py-4 font-medium text-gray-900 dark:bg-gray-800 dark:text-white"
-														>
-															<div className="flex space-x-2">
-																<ProductThumbImage src={product.image} alt={product.name} />
-																<span className="break-words py-2">{product.name}</span>
-															</div>
-														</th>
-														<td className="px-6 py-4">
-															<OrderItemQuantity
-																cartId={cart.id}
-																productId={product.id}
-																quantity={item.quantity}
-															/>
-														</td>
+														<div className="flex space-x-2">
+															<ProductThumbImage src={product.image} alt={product.name} />
+															<span className="break-words py-2">{product.name}</span>
+														</div>
+													</th>
+													<td className="px-6 py-4">
+														<OrderItemQuantity
+															cartId={cart.id}
+															productId={product.id}
+															quantity={item.quantity}
+														/>
+													</td>
 
-														<td className="bg-gray-50 px-6 py-4 font-medium dark:bg-gray-800">
-															{formatPrice(product.price)}
-														</td>
+													<td className="bg-gray-50 px-6 py-4 font-medium dark:bg-gray-800">
+														{formatPrice(product.price)}
+													</td>
 
-														<td className="px-6 py-4 font-bold">
-															{formatPrice(product.price * item.quantity)}
-														</td>
-														<td className="w-20">
-															<OrderRemoveItem cartId={cart.id} productId={product.id} />
-														</td>
-													</tr>
-												</>
+													<td className="px-6 py-4 font-bold">
+														{formatPrice(product.price * item.quantity)}
+													</td>
+													<td className="w-20">
+														<OrderRemoveItem cartId={cart.id} productId={product.id} />
+													</td>
+												</tr>
 											);
 										})}
 								</>

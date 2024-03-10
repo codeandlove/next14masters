@@ -64,6 +64,7 @@ export type Meta = {
 export type Mutation = {
   createOrder: Order;
   createOrderItem: Order;
+  createReview: Review;
   removeOrderItem: Order;
   updateOrderItem: Order;
 };
@@ -73,6 +74,16 @@ export type MutationCreateOrderItemArgs = {
   orderId: Scalars['ID']['input'];
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
+};
+
+
+export type MutationCreateReviewArgs = {
+  content: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+  headline: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  productId: Scalars['ID']['input'];
+  rating: Scalars['Int']['input'];
 };
 
 
@@ -149,6 +160,7 @@ export type Query = {
   order: Order;
   product: Product;
   products: ProductList;
+  reviews: Array<Review>;
 };
 
 
@@ -194,6 +206,21 @@ export type QueryProductsArgs = {
   search?: InputMaybe<Scalars['String']['input']>;
   skip: Scalars['Int']['input'];
   take: Scalars['Int']['input'];
+};
+
+
+export type QueryReviewsArgs = {
+  productId: Scalars['ID']['input'];
+};
+
+export type Review = {
+  content: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  email: Scalars['String']['output'];
+  headline: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  rating: Scalars['Int']['output'];
 };
 
 export type SortDirection =
@@ -291,6 +318,8 @@ export type CollectionItemFragment = { id: string, name: string, slug: string, d
 
 export type ProductItemFragment = { id: string, name: string, slug: string, description: string, longDescription: string, price: number, image: string, status: string, rating: number, categories: Array<{ name: string, slug: string }>, collections: Array<{ name: string, slug: string }> } & { ' $fragmentName'?: 'ProductItemFragment' };
 
+export type ReviewItemFragment = { id: string, headline: string, content: string, rating: number, name: string, email: string, createdAt: unknown } & { ' $fragmentName'?: 'ReviewItemFragment' };
+
 export type ProductGetByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
@@ -328,6 +357,25 @@ export type ProductsSearchQueryVariables = Exact<{
 
 
 export type ProductsSearchQuery = { products: { data: Array<{ ' $fragmentRefs'?: { 'ProductItemFragment': ProductItemFragment } }>, meta: { total: number, count: number } } };
+
+export type ReviewCreateMutationVariables = Exact<{
+  productId: Scalars['ID']['input'];
+  headline: Scalars['String']['input'];
+  content: Scalars['String']['input'];
+  rating: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+  email: Scalars['String']['input'];
+}>;
+
+
+export type ReviewCreateMutation = { createReview: { id: string, headline: string, content: string, rating: number, name: string, email: string, createdAt: unknown } };
+
+export type ReviewGetReviewsQueryVariables = Exact<{
+  productId: Scalars['ID']['input'];
+}>;
+
+
+export type ReviewGetReviewsQuery = { reviews: Array<{ ' $fragmentRefs'?: { 'ReviewItemFragment': ReviewItemFragment } }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -399,6 +447,17 @@ export const ProductItemFragmentDoc = new TypedDocumentString(`
   }
 }
     `, {"fragmentName":"ProductItem"}) as unknown as TypedDocumentString<ProductItemFragment, unknown>;
+export const ReviewItemFragmentDoc = new TypedDocumentString(`
+    fragment ReviewItem on Review {
+  id
+  headline
+  content
+  rating
+  name
+  email
+  createdAt
+}
+    `, {"fragmentName":"ReviewItem"}) as unknown as TypedDocumentString<ReviewItemFragment, unknown>;
 export const CartAddProductDocument = new TypedDocumentString(`
     mutation CartAddProduct($orderId: ID!, $productId: ID!, $quantity: Int!) {
   createOrderItem(orderId: $orderId, productId: $productId, quantity: $quantity) {
@@ -722,3 +781,38 @@ export const ProductsSearchDocument = new TypedDocumentString(`
     slug
   }
 }`) as unknown as TypedDocumentString<ProductsSearchQuery, ProductsSearchQueryVariables>;
+export const ReviewCreateDocument = new TypedDocumentString(`
+    mutation ReviewCreate($productId: ID!, $headline: String!, $content: String!, $rating: Int!, $name: String!, $email: String!) {
+  createReview(
+    productId: $productId
+    headline: $headline
+    content: $content
+    rating: $rating
+    name: $name
+    email: $email
+  ) {
+    id
+    headline
+    content
+    rating
+    name
+    email
+    createdAt
+  }
+}
+    `) as unknown as TypedDocumentString<ReviewCreateMutation, ReviewCreateMutationVariables>;
+export const ReviewGetReviewsDocument = new TypedDocumentString(`
+    query ReviewGetReviews($productId: ID!) {
+  reviews(productId: $productId) {
+    ...ReviewItem
+  }
+}
+    fragment ReviewItem on Review {
+  id
+  headline
+  content
+  rating
+  name
+  email
+  createdAt
+}`) as unknown as TypedDocumentString<ReviewGetReviewsQuery, ReviewGetReviewsQueryVariables>;

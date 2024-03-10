@@ -7,7 +7,7 @@ import { PageTitle } from "@/ui/atoms/PageTitle";
 import { type ProductItemFragment } from "@/gql/graphql";
 import { SortBy } from "@/ui/atoms/SortBy";
 
-const paginationCount = 20;
+const paginationCount = 5;
 
 const paginationLinks: ActiveLinkItemType[] = Array.from(
 	{ length: paginationCount },

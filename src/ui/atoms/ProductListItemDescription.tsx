@@ -17,7 +17,8 @@ export const ProductListItemDescription = ({
 			<div className="flex items-center justify-between py-1">
 				{rating && (
 					<span className="mr-2 text-slate-500">
-						{rating} <span className="text-yellow-500">{"★".repeat(Math.floor(rating))}</span>
+						<span data-testid="product-rating">{rating}</span>{" "}
+						<span className="text-yellow-500">{"★".repeat(Math.floor(rating))}</span>
 					</span>
 				)}
 				{status && (
@@ -29,7 +30,12 @@ export const ProductListItemDescription = ({
 			<div className="mt-2 w-full justify-between space-y-3">
 				<div className="grid grid-cols-3">
 					{collections && <span className="text-sm text-slate-800">{collections[0]?.name}</span>}
-					<span className="col-span-2 w-full text-right text-sm font-bold text-slate-600">
+					<span
+						className="col-span-2 w-full text-right text-sm font-bold text-slate-600"
+					>
+						<span className="sr-only" data-testid="product-price">
+							{price}
+						</span>
 						{formatPrice(price)}
 					</span>
 				</div>

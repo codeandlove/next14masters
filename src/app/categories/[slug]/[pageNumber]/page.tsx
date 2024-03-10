@@ -10,7 +10,7 @@ import { PageTitle } from "@/ui/atoms/PageTitle";
 import { SortBy } from "@/ui/atoms/SortBy";
 import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 
-const paginationCount = 20;
+const paginationCount = 5;
 
 // export const generateStaticParams = async () => {
 // 	const categories = await getCategories({ pageNumber: "1" });
