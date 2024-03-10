@@ -11,6 +11,8 @@ export async function getCartFromCookies() {
 		const cart = await getCartDataById({ id: cartId });
 		if (cart) {
 			return cart;
+		} else {
+			cookies().delete("cartId");
 		}
 	}
 }
@@ -30,7 +32,15 @@ export async function getOrCreateCart(): Promise<
 		throw new Error("Failed to create cart");
 	}
 
-	cookies().set("cartId", newCart.id);
+	cookies().set("cartId", newCart.id, {
+		maxAge: 60 * 60 * 24 * 365,
+		expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365),
+		path: "/",
+		httpOnly: true,
+		secure: true,
+		sameSite: "lax",
+		priority: "low",
+	});
 
 	return newCart;
 }
@@ -50,6 +60,8 @@ export const handlePaymentAction = async () => {
 			typescript: true,
 		});
 
+		const websiteUrl = process.env.WEBSITE_URL || "http://localhost:3000";
+
 		const checkoutSession = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
 			metadata: {
@@ -66,8 +78,8 @@ export const handlePaymentAction = async () => {
 				quantity: item.quantity,
 			})),
 			mode: "payment",
-			success_url: "http://localhost:3000/cart/success?sessionId={CHECKOUT_SESSION_ID}",
-			cancel_url: "http://ocalhost:3000/cart/cancel",
+			success_url: `${websiteUrl}/cart/success?sessionId={CHECKOUT_SESSION_ID}`,
+			cancel_url: `${websiteUrl}/cart/cancel?sessionId={CHECKOUT_SESSION_ID}`,
 		});
 
 		if (!checkoutSession.url) {

@@ -3,24 +3,31 @@
 import { useState } from "react";
 
 export const ProductQtyInput = () => {
-	const [qty, setQty] = useState(0);
+	const [qty, setQty] = useState(1);
+
+	if (qty < 1) {
+		setQty(1);
+	}
 
 	return (
-		<div className="py-4">
+		<div className="flex flex-nowrap items-center py-4">
 			<button
-				className="h-10 w-10 rounded-md border border-gray-300 px-2"
+				type="button"
+				className="btn btn-secondary  h-12 w-12 rounded-md border border-gray-300 p-2 text-lg font-normal"
 				onClick={() => setQty((qty) => qty - 1)}
 			>
 				-
 			</button>
 			<input
-				className="mx-2 h-10 w-16 rounded-md border border-gray-300 text-center"
+				className="form-input mx-2 h-12 w-12 appearance-none rounded-md border border-gray-300 p-2 text-center"
 				type="number"
+				name="quantity"
 				value={qty}
 				readOnly
 			/>
 			<button
-				className="h-10 w-10 rounded-md border border-gray-300 px-2"
+				type="button"
+				className="btn btn-secondary h-12 w-12 rounded-md border border-gray-300 p-2 text-lg font-normal"
 				onClick={() => setQty((qty) => qty + 1)}
 			>
 				+

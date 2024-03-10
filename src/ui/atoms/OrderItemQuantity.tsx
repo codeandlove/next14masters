@@ -20,6 +20,7 @@ export const OrderItemQuantity = ({
 	return (
 		<form className="flex items-center">
 			<button
+				data-testid="decrement"
 				type="submit"
 				className="btn btn-small btn-secondary flex items-center justify-center"
 				formAction={async () => {
@@ -30,8 +31,11 @@ export const OrderItemQuantity = ({
 			>
 				-
 			</button>
-			<div className="p-4">{optimisticQuantity}</div>
+			<div className="p-4" data-testid="quantity">
+				{optimisticQuantity}
+			</div>
 			<button
+				data-testid="increment"
 				type="submit"
 				className="btn btn-small btn-secondary flex items-center justify-center"
 				formAction={async () => {

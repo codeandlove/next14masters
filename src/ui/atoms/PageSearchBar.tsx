@@ -1,7 +1,9 @@
 "use client";
 
+import { SearchIcon } from "lucide-react";
 import { type Route } from "next";
 import { useRouter } from "next/navigation";
+import { searchAction } from "@/api/search";
 
 export const PageSearchBar = () => {
 	const router = useRouter();
@@ -9,7 +11,7 @@ export const PageSearchBar = () => {
 	const time = 500;
 	let locked = false;
 
-	const applySearch = async (event: React.KeyboardEvent<HTMLDivElement>) => {
+	const applySearchByKeyEnter = async (event: React.KeyboardEvent<HTMLDivElement>) => {
 		const target = event.target as HTMLInputElement;
 		const phrase: string = target.value;
 
@@ -43,18 +45,22 @@ export const PageSearchBar = () => {
 			tabIndex={0}
 			aria-label="search"
 		>
-			<form className="flex items-center space-x-4">
+			<form action={searchAction} className="relative flex items-center space-x-4">
 				<label htmlFor="search" className="sr-only">
 					Search products...
 				</label>
 				<input
 					id="search"
 					type="text"
+					name="search"
 					onChange={(e) => searchByPhrase(e.target.value)}
-					onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => applySearch(e)}
-					className="h-10 w-full rounded-md border border-gray-300 px-4 focus:border-blue-300 focus:ring-blue-500"
+					onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => applySearchByKeyEnter(e)}
+					className="form-input h-10 w-full rounded-md border border-gray-300 px-4 pr-10 text-sm placeholder:font-normal placeholder:text-slate-300 focus:border-blue-300 focus:ring-blue-500"
 					placeholder="Search products..."
 				/>
+				<button type="submit" className="absolute right-2">
+					<SearchIcon size={24} className="text-slate-500" />
+				</button>
 			</form>
 		</div>
 	);

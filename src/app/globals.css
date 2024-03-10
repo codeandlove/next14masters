@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"] {
+		-webkit-appearance: none;
+		-moz-appearance: textfield !important;
+	}
+}
+
 @layer components {
 	.btn {
 		@apply rounded px-8 py-4;
@@ -21,5 +30,38 @@
 
 	[enabled] {
 		@apply pointer-events-none cursor-none opacity-25;
+	}
+
+	.form-control {
+		@apply flex w-full flex-col py-2;
+	}
+
+	.form-radio-control {
+		@apply flex items-center py-2;
+	}
+
+	.form-radio-control .form-label {
+		@apply my-0 ml-3 cursor-pointer;
+	}
+
+	.form-radio-control .form-input {
+		@apply p-3;
+	}
+
+	.form-label {
+		@apply mb-3 text-slate-500;
+	}
+
+	.form-input {
+		@apply rounded border border-slate-200 p-3 focus:outline-none focus:ring-2 focus:ring-blue-500;
+	}
+
+	.form-select {
+		@apply block appearance-none rounded border border-slate-200 bg-white p-2 pr-5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500;
+		background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 10 6'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 1 4 4 4-4'/%3E%3C/svg%3E");
+		background-position: right 0.75rem center;
+		background-repeat: no-repeat;
+		background-size: 0.75em 0.75em;
+		padding-right: 2.5rem;
 	}
 }

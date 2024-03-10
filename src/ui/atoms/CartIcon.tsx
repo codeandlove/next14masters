@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ShoppingBag } from "lucide-react";
 import { getCartFromCookies } from "@/api/cart";
 
 export async function CartIcon() {
@@ -14,7 +15,9 @@ export async function CartIcon() {
 
 	return (
 		<div className="mx-4">
-			<Link href="/minicart">Cart ({quantity})</Link>
+			<Link className="flex w-20 items-center" href="/minicart">
+				<ShoppingBag className="mr-1" /> ({quantity})
+			</Link>
 		</div>
 	);
 }

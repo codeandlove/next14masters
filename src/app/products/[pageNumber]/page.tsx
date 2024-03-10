@@ -8,7 +8,7 @@ import { type ProductItemFragment } from "@/gql/graphql";
 import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 import { SortBy } from "@/ui/atoms/SortBy";
 
-const paginationCount = 20;
+const paginationCount = 5;
 
 const paginationLinks: ActiveLinkItemType[] = Array.from(
 	{ length: paginationCount },

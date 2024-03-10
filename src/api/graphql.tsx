@@ -28,6 +28,10 @@ import {
 	CartUpdateProductQuantityDocument,
 	type CartRemoveProductMutation,
 	CartRemoveProductDocument,
+	type ReviewCreateMutation,
+	ReviewCreateDocument,
+	type ReviewGetReviewsQuery,
+	ReviewGetReviewsDocument,
 } from "@/gql/graphql";
 import { sortByKey } from "@/ui/utils";
 
@@ -81,7 +85,7 @@ export const getProductsList = async (params: { pageNumber: string; search?: str
 		variables: { take: take, skip: (Number(params.pageNumber) - 1) * take, search: params.search },
 	});
 
-	return sortByKey(productGraphqlResponse.products.data, 'id');
+	return sortByKey(productGraphqlResponse.products.data, "id");
 };
 
 export const getProductById = async ({ id }: { id: ProductItemFragment["id"] }) => {
@@ -115,7 +119,10 @@ export const getCategoryBySlug = async (params: {
 		},
 	});
 
-	return {...graphqlResponse.category, products: sortByKey(graphqlResponse.category.products, 'id')};
+	return {
+		...graphqlResponse.category,
+		products: sortByKey(graphqlResponse.category.products, "id"),
+	};
 };
 
 export const getCollectionBySlug = async (params: {
@@ -131,7 +138,10 @@ export const getCollectionBySlug = async (params: {
 		},
 	});
 
-	return {...graphqlResponse.collection, products: sortByKey(graphqlResponse.collection.products, 'id')};
+	return {
+		...graphqlResponse.collection,
+		products: sortByKey(graphqlResponse.collection.products, "id"),
+	};
 };
 
 export const getCategories = async (params: { pageNumber: string }) => {
@@ -165,7 +175,10 @@ export const getCartDataById = async ({ id }: { id: CartOrderFragment["id"] }) =
 		},
 	});
 
-	return {...graphqlResponse.order, orderItems: sortByKey(graphqlResponse.order.orderItems, 'id')};
+	return {
+		...graphqlResponse.order,
+		orderItems: sortByKey(graphqlResponse.order.orderItems, "id"),
+	};
 };
 
 export const createNewCart = async () => {
@@ -237,3 +250,44 @@ export const removeOrderItem = async ({
 	return graphqlResponse.removeOrderItem;
 };
 
+export const createReview = async ({
+	productId,
+	headline,
+	content,
+	rating,
+	name,
+	email,
+}: {
+	productId: string;
+	headline: string;
+	content: string;
+	rating: number;
+	name: string;
+	email: string;
+}) => {
+	const graphqlResponse: ReviewCreateMutation = await executeGraphql({
+		query: ReviewCreateDocument,
+		variables: {
+			productId: productId,
+			headline: headline,
+			content: content,
+			rating: rating,
+			name: name,
+			email: email,
+		},
+		next: {
+			tags: [`${productId}_reviews`],
+		},
+	});
+
+	return graphqlResponse.createReview;
+};
+
+export const getProductReviews = async ({ productId }: { productId: string }) => {
+	const graphqlResponse: ReviewGetReviewsQuery = await executeGraphql({
+		query: ReviewGetReviewsDocument,
+		variables: { productId: productId },
+	});
+
+	return graphqlResponse.reviews;
+};

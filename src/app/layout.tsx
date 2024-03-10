@@ -5,8 +5,9 @@ import { Suspense } from "react";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
 import { getCategories } from "@/api/graphql";
-import { PageSearchBar } from "@/ui/molecules/PageSearchBar";
+import { PageSearchBar } from "@/ui/atoms/PageSearchBar";
 import { CartIcon } from "@/ui/atoms/CartIcon";
+import { Logo } from "@/ui/atoms/logo";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,8 +43,9 @@ export default async function RootLayout({
 		<html lang="en">
 			<body className={inter.className}>
 				<header className="pb-32">
-					<div className="fixed inset-x-0 top-0 z-10 bg-slate-100 shadow-2xl shadow-black/10">
+					<div className="fixed inset-x-0 top-0 z-10 bg-white shadow-2xl shadow-black/10">
 						<div className="container mx-auto flex items-center justify-between">
+							<Logo />
 							<PageNavigation links={pageLinks} />
 							<PageSearchBar />
 							<Suspense>

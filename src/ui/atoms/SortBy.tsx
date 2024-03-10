@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { type Route } from "next";
+import { useSearchParams, useRouter } from "next/navigation";
 
 export const SortBy = () => {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const params = new URLSearchParams(searchParams);
 	let paramsString = "";
@@ -18,27 +19,28 @@ export const SortBy = () => {
 		paramsString = paramsString.slice(0, -1);
 	}
 
+	const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		const sortByValue = e.target.value;
+		const sortQuery: Route = `?sortby=${sortByValue}${paramsString ? `&${paramsString}` : ""}`;
+
+		router.push(sortQuery);
+	};
+
 	return (
 		<div className="flex w-full items-center justify-end space-x-4 px-2 py-8">
 			<div className="text-sm font-medium text-slate-500">Sort By</div>
-			<Link
-				href={`?sortby=price${paramsString ? `&${paramsString}` : ""}`}
-				className="btn btn-small btn-secondary text-xs"
-			>
-				Price
-			</Link>
-			<Link
-				href={`?sortby=name${paramsString ? `&${paramsString}` : ""}`}
-				className="btn btn-small btn-secondary text-xs"
-			>
-				Name
-			</Link>
-			<Link
-				href={`?sortby=rating${paramsString ? `&${paramsString}` : ""}`}
-				className="btn btn-small btn-secondary text-xs"
-			>
-				Rating
-			</Link>
+			<select className="form-select" onChange={handleChange}>
+				<option>Default</option>
+				<option defaultValue="price" data-testid="sort-by-price">
+					price
+				</option>
+				<option defaultValue="name" data-testid="sort-by-name">
+					name
+				</option>
+				<option defaultValue="rating" data-testid="sort-by-rating">
+					rating
+				</option>
+			</select>
 		</div>
 	);
 };
