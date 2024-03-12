@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { type OrderItemFragment } from "@/gql/graphql";
 
 export const OrderCard = ({ order }: { order: OrderItemFragment }) => {
@@ -24,7 +23,7 @@ export const OrderCard = ({ order }: { order: OrderItemFragment }) => {
 						const {
 							id,
 							quantity,
-							product: { name, image },
+							product: { name },
 						} = orderItem;
 						return (
 							<div
@@ -34,15 +33,6 @@ export const OrderCard = ({ order }: { order: OrderItemFragment }) => {
 								<p>{id}</p>
 								<p className="mr-auto text-sm">{name}</p>
 								<p className="text-sm">quantity: {quantity}</p>
-								{image && name && (
-									<Image
-										src={image as string}
-										width={32}
-										height={32}
-										alt={name as string}
-										className="h-8 w-8"
-									/>
-								)}
 							</div>
 						);
 					})}
