@@ -1,0 +1,24 @@
+mutation PlaceOrder(
+	$orderId: ID!
+	$email: String!
+	$userId: ID
+	$sessionId: String
+	$totalAmount: Int!
+) {
+	placeOrder(
+		orderId: $orderId
+		email: $email
+		userId: $userId
+		sessionId: $sessionId
+		totalAmount: $totalAmount
+	) {
+		id
+		email
+		userId
+		sessionId
+		status
+		totalAmount
+		createdAt
+		updatedAt
+	}
+}

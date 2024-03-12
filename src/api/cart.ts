@@ -1,7 +1,9 @@
+"use server";
+
 import { cookies } from "next/headers";
 import Stripe from "stripe";
 import { redirect } from "next/navigation";
-import { getCartDataById, createNewCart } from "@/api/graphql";
+import { getCartDataById, createNewCart, placeOrder } from "@/api/graphql";
 import { type CartOrderFragment, type CartOrderItemFragment } from "@/gql/graphql";
 
 export async function getCartFromCookies() {
@@ -45,8 +47,15 @@ export async function getOrCreateCart(): Promise<
 	return newCart;
 }
 
-export const handlePaymentAction = async () => {
+export const handlePaymentAction = async (formData: FormData) => {
 	"use server";
+
+	const email = formData.get("email") as string;
+	const userId = formData.get("userId") as string;
+
+	if (!email) {
+		return;
+	}
 
 	if (!process.env.STRIPE_SECRET_KEY) {
 		throw new Error("Stripe secret key not found");
@@ -66,6 +75,8 @@ export const handlePaymentAction = async () => {
 			payment_method_types: ["card"],
 			metadata: {
 				cartId: cart.id,
+				email: email,
+				userId: userId || null,
 			},
 			line_items: cart.orderItems.map((item) => ({
 				price_data: {
@@ -73,13 +84,26 @@ export const handlePaymentAction = async () => {
 					product_data: {
 						name: item.product.name,
 					},
-					unit_amount: item.product.price * 100,
+					unit_amount: item.product.price,
 				},
 				quantity: item.quantity,
 			})),
 			mode: "payment",
 			success_url: `${websiteUrl}/cart/success?sessionId={CHECKOUT_SESSION_ID}`,
 			cancel_url: `${websiteUrl}/cart/cancel?sessionId={CHECKOUT_SESSION_ID}`,
+		});
+
+		const totalAmount = cart.orderItems.reduce(
+			(acc, item) => acc + item.product.price * item.quantity,
+			0,
+		);
+
+		await placeOrder({
+			orderId: cart.id,
+			email: email,
+			userId: userId,
+			sessionId: checkoutSession.id,
+			totalAmount: totalAmount,
 		});
 
 		if (!checkoutSession.url) {

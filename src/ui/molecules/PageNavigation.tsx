@@ -7,7 +7,7 @@ export const PageNavigation = ({ links }: { links: ActiveLinkItemType[] }) => {
 			<div className="container mx-auto">
 				<ul className="flex items-center space-x-8 px-4">
 					{links.map((link, index) => (
-						<li className="py-8" key={`link-key-${index}`}>
+						<li className="py-8 text-sm font-normal uppercase" key={`link-key-${index}`}>
 							<ActiveLink href={link.url} exact={link.exact} activeClassName={`underline`}>
 								{link.name}
 							</ActiveLink>

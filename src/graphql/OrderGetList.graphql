@@ -1,0 +1,22 @@
+query GetOrderList($userId: ID!) {
+	orders(userId: $userId) {
+		id
+		totalAmount
+		status
+		email
+		createdAt
+		updatedAt
+		orderItems {
+			id
+			quantity
+			product {
+				id
+				name
+				description
+				image
+				price
+				status
+			}
+		}
+	}
+}

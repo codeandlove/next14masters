@@ -32,6 +32,10 @@ import {
 	ReviewCreateDocument,
 	type ReviewGetReviewsQuery,
 	ReviewGetReviewsDocument,
+	type PlaceOrderMutation,
+	PlaceOrderDocument,
+	type GetOrderListQuery,
+	GetOrderListDocument,
 } from "@/gql/graphql";
 import { sortByKey } from "@/ui/utils";
 
@@ -250,6 +254,35 @@ export const removeOrderItem = async ({
 	return graphqlResponse.removeOrderItem;
 };
 
+
+export const placeOrder = async ({
+	orderId,
+	email,
+	userId,
+	sessionId,
+	totalAmount
+}: {
+	orderId: string;
+	email: string;
+	userId: string | null;
+	sessionId: string | null;
+	totalAmount: number
+}) => {
+	const graphqlResponse: PlaceOrderMutation = await executeGraphql({
+		query: PlaceOrderDocument,
+		variables: {
+			orderId: orderId,
+			email: email,
+			userId: userId,
+			sessionId: sessionId,
+			totalAmount: totalAmount
+		},
+	});
+
+	return graphqlResponse.placeOrder;
+};
+
+
 export const createReview = async ({
 	productId,
 	headline,
@@ -290,4 +323,13 @@ export const getProductReviews = async ({ productId }: { productId: string }) =>
 	});
 
 	return graphqlResponse.reviews;
+};
+
+export const getOrdersByUserId = async ({ userId }: { userId: string }) => {
+	const graphqlResponse: GetOrderListQuery = await executeGraphql({
+		query: GetOrderListDocument,
+		variables: { userId: userId },
+	});
+
+	return graphqlResponse.orders;
 };

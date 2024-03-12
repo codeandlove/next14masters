@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { PageNavigation } from "@/ui/molecules/PageNavigation";
 import { type ActiveLinkItemType } from "@/ui/types";
 import { getCategories } from "@/api/graphql";
@@ -40,30 +41,40 @@ export default async function RootLayout({
 	}
 
 	return (
-		<html lang="en">
-			<body className={inter.className}>
-				<header className="pb-32">
-					<div className="fixed inset-x-0 top-0 z-10 bg-white shadow-2xl shadow-black/10">
-						<div className="container mx-auto flex items-center justify-between">
-							<Logo />
-							<PageNavigation links={pageLinks} />
-							<PageSearchBar />
-							<Suspense>
-								<CartIcon />
-							</Suspense>
+		<ClerkProvider>
+			<html lang="en">
+				<body className={inter.className}>
+					<header className="pb-24">
+						<div className="fixed inset-x-0 top-0 z-10 flex h-24 items-center bg-white shadow-2xl shadow-black/10">
+							<div className="container mx-auto flex items-center justify-between">
+								<Logo />
+								<PageNavigation links={pageLinks} />
+								<PageSearchBar />
+								<div className="ml-4 mr-2">
+									<SignedIn>
+										<UserButton userProfileMode="navigation" userProfileUrl="/user-profile" />
+									</SignedIn>
+									<SignedOut>
+										<SignInButton />
+									</SignedOut>
+								</div>
+								<Suspense>
+									<CartIcon />
+								</Suspense>
+							</div>
 						</div>
-					</div>
-				</header>
-				<main className="my-4 px-4">
-					<section className="container mx-auto flex min-h-screen flex-col items-center">
-						{children}
-					</section>
-				</main>
-				<footer className="container mx-auto p-8 text-center text-sm text-gray-500">
-					<p className="text-center text-sm">&copy; 2024 Super Store</p>
-				</footer>
-				{modal}
-			</body>
-		</html>
+					</header>
+					<main className="my-4 px-4">
+						<section className="container mx-auto flex min-h-screen flex-col items-center">
+							{children}
+						</section>
+					</main>
+					<footer className="container mx-auto p-8 text-center text-sm text-gray-500">
+						<p className="text-center text-sm">&copy; 2024 Super Store</p>
+					</footer>
+					{modal}
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

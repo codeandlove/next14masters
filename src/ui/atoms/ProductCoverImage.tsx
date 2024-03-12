@@ -1,7 +1,7 @@
 import NextImage from "next/image";
 export const ProductCoverImage = ({ src, alt }: { src: string; alt: string }) => {
 	return (
-		<div className="border p-4">
+		<div className="border p-1">
 			<NextImage
 				loading="lazy"
 				src={src}
