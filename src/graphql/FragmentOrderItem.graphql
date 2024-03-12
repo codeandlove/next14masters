@@ -1,0 +1,20 @@
+fragment OrderItem on Order {
+	id
+	status
+	email
+	totalAmount
+	createdAt
+	updatedAt
+	orderItems {
+		id
+		quantity
+		product {
+			id
+			name
+			description
+			image
+			price
+			status
+		}
+	}
+}

@@ -28,8 +28,11 @@ const documents = {
     "fragment CartOrderItem on OrderItem {\n  id\n  quantity\n  product {\n    id\n    name\n    description\n    image\n    price\n    status\n  }\n}": types.CartOrderItemFragmentDoc,
     "fragment CategoryItem on Category {\n  id\n  name\n  slug\n  description\n}": types.CategoryItemFragmentDoc,
     "fragment CollectionItem on Collection {\n  id\n  name\n  slug\n  description\n}": types.CollectionItemFragmentDoc,
+    "fragment OrderItem on Order {\n  id\n  status\n  email\n  totalAmount\n  createdAt\n  updatedAt\n  orderItems {\n    id\n    quantity\n    product {\n      id\n      name\n      description\n      image\n      price\n      status\n    }\n  }\n}": types.OrderItemFragmentDoc,
     "fragment ProductItem on Product {\n  id\n  name\n  slug\n  description\n  longDescription\n  price\n  image\n  status\n  rating\n  categories {\n    name\n    slug\n  }\n  collections {\n    name\n    slug\n  }\n}": types.ProductItemFragmentDoc,
     "fragment ReviewItem on Review {\n  id\n  headline\n  content\n  rating\n  name\n  email\n  createdAt\n}": types.ReviewItemFragmentDoc,
+    "query GetOrderList($userId: ID!) {\n  orders(userId: $userId) {\n    id\n    totalAmount\n    status\n    email\n    createdAt\n    updatedAt\n    orderItems {\n      id\n      quantity\n      product {\n        id\n        name\n        description\n        image\n        price\n        status\n      }\n    }\n  }\n}": types.GetOrderListDocument,
+    "mutation PlaceOrder($orderId: ID!, $email: String!, $userId: ID, $sessionId: String, $totalAmount: Int!) {\n  placeOrder(\n    orderId: $orderId\n    email: $email\n    userId: $userId\n    sessionId: $sessionId\n    totalAmount: $totalAmount\n  ) {\n    id\n    email\n    userId\n    sessionId\n    status\n    totalAmount\n    createdAt\n    updatedAt\n  }\n}": types.PlaceOrderDocument,
     "query ProductGetById($id: ID!) {\n  product(id: $id) {\n    ...ProductItem\n    categories {\n      ...CategoryItem\n    }\n    collections {\n      ...CollectionItem\n    }\n  }\n}": types.ProductGetByIdDocument,
     "query ProductGetBySlug($slug: String!) {\n  product(slug: $slug) {\n    ...ProductItem\n    categories {\n      ...CategoryItem\n    }\n    collections {\n      ...CollectionItem\n    }\n  }\n}": types.ProductGetBySlugDocument,
     "query ProductsGetList($skip: Int!, $take: Int!, $search: String) {\n  products(take: $take, skip: $skip, search: $search) {\n    data {\n      ...ProductItem\n    }\n    meta {\n      total\n      count\n    }\n  }\n}": types.ProductsGetListDocument,
@@ -97,11 +100,23 @@ export function graphql(source: "fragment CollectionItem on Collection {\n  id\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "fragment OrderItem on Order {\n  id\n  status\n  email\n  totalAmount\n  createdAt\n  updatedAt\n  orderItems {\n    id\n    quantity\n    product {\n      id\n      name\n      description\n      image\n      price\n      status\n    }\n  }\n}"): typeof import('./graphql').OrderItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "fragment ProductItem on Product {\n  id\n  name\n  slug\n  description\n  longDescription\n  price\n  image\n  status\n  rating\n  categories {\n    name\n    slug\n  }\n  collections {\n    name\n    slug\n  }\n}"): typeof import('./graphql').ProductItemFragmentDoc;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "fragment ReviewItem on Review {\n  id\n  headline\n  content\n  rating\n  name\n  email\n  createdAt\n}"): typeof import('./graphql').ReviewItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "query GetOrderList($userId: ID!) {\n  orders(userId: $userId) {\n    id\n    totalAmount\n    status\n    email\n    createdAt\n    updatedAt\n    orderItems {\n      id\n      quantity\n      product {\n        id\n        name\n        description\n        image\n        price\n        status\n      }\n    }\n  }\n}"): typeof import('./graphql').GetOrderListDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "mutation PlaceOrder($orderId: ID!, $email: String!, $userId: ID, $sessionId: String, $totalAmount: Int!) {\n  placeOrder(\n    orderId: $orderId\n    email: $email\n    userId: $userId\n    sessionId: $sessionId\n    totalAmount: $totalAmount\n  ) {\n    id\n    email\n    userId\n    sessionId\n    status\n    totalAmount\n    createdAt\n    updatedAt\n  }\n}"): typeof import('./graphql').PlaceOrderDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

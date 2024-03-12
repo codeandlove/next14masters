@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { currentUser } from "@clerk/nextjs";
 import { formatPrice } from "@/ui/utils";
 import { OrderItemQuantity } from "@/ui/atoms/OrderItemQuantity";
 import { OrderRemoveItem } from "@/ui/atoms/OrderRemoveItem";
@@ -7,6 +8,18 @@ import { ProductThumbImage } from "@/ui/atoms/ProductThumbImage";
 
 export default async function CartPage() {
 	const cart = await getCartFromCookies();
+	let email, userId;
+
+	const auth = await currentUser().then((user) => user);
+
+	if (auth) {
+		const findEmail = auth.emailAddresses.find((email) => {
+			return email.id.toString() === auth.primaryEmailAddressId?.toString();
+		});
+
+		email = findEmail?.emailAddress;
+		userId = auth?.id;
+	}
 
 	if (!cart) {
 		redirect("/");
@@ -100,7 +113,32 @@ export default async function CartPage() {
 			</div>
 			{haveItems() && cart && (
 				<div className="w-full p-4">
-					<form className="flex w-full justify-end" action={handlePaymentAction}>
+					<form className="flex w-full items-end justify-end" action={handlePaymentAction}>
+						<div className="form-control mr-4 flex-row items-center">
+							{email ? (
+								<>
+									<input type="hidden" name="email" value={email} />
+									<input type="hidden" name="userId" value={userId} />
+									<p>
+										You are logged in as: <strong>{email}</strong>
+									</p>
+								</>
+							) : (
+								<>
+									<label htmlFor="email" className="form-label mb-0 mr-4">
+										Email
+									</label>
+									<input
+										type="email"
+										placeholder="Please enter an email..."
+										id="email"
+										name="email"
+										required
+										className="form-input"
+									/>
+								</>
+							)}
+						</div>
 						<button type="submit" className="btn btn-primary w-64">
 							Pay now
 						</button>
