@@ -7,9 +7,9 @@ import { searchAction } from "@/api/search";
 
 export const PageSearchBar = () => {
 	const router = useRouter();
-	const limit = 2;
+	const limit = 0;
 	const time = 1000;
-	let locked = false;
+	let timeout: NodeJS.Timeout | number | null = null;
 
 	const applySearchByKeyEnter = async (event: React.KeyboardEvent<HTMLDivElement>) => {
 		const target = event.target as HTMLInputElement;
@@ -22,34 +22,32 @@ export const PageSearchBar = () => {
 	};
 
 	const searchByPhrase = async (phrase: string) => {
-		if (phrase.length < limit || locked) {
+		if (phrase.length < limit) {
 			return;
 		}
 
-		locked = true;
+		if (timeout) {
+			clearTimeout(timeout);
+		}
 
-		setTimeout(() => {
-			locked = false;
+		timeout = setTimeout(() => {
 			updateRoute(phrase);
 		}, time);
 	};
 
 	const updateRoute = (phrase: string) => {
-		router.push(`/search/?query=${phrase}` as Route);
+		router.replace(`/search/?query=${phrase}` as Route);
 	};
 
 	return (
-		<div
-			className="ml-auto mr-2 flex items-center justify-between"
-			role="searchbox"
-			tabIndex={0}
-			aria-label="search"
-		>
+		<div className="ml-auto mr-2 flex items-center justify-between" aria-label="search">
 			<form action={searchAction} className="relative flex items-center space-x-4">
 				<label htmlFor="search" className="sr-only">
 					Search products...
 				</label>
 				<input
+					role="searchbox"
+					tabIndex={0}
 					id="search"
 					type="text"
 					name="search"
