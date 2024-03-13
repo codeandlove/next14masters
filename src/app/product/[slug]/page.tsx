@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { revalidateTag } from "next/cache";
+import { type Metadata } from "next";
 import { getProductsList, getProductBySlug } from "@/api/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { ProductCoverImage } from "@/ui/atoms/ProductCoverImage";
@@ -11,29 +12,29 @@ import { addToCart } from "@/ui/actions";
 import { getOrCreateCart } from "@/api/cart";
 import { ProductReviews } from "@/ui/molecules/ProductReviews";
 
-// export const generateMetadata = async ({
-// 	params,
-// }: {
-// 	params: { slug: string };
-// }): Promise<Metadata> => {
-// 	const product = (await getProductBySlug({ slug: params.slug })) as ProductItemFragment;
+export const generateMetadata = async ({
+	params,
+}: {
+	params: { slug: string };
+}): Promise<Metadata> => {
+	const product = (await getProductBySlug({ slug: params.slug })) as ProductItemFragment;
 
-// 	return {
-// 		title: `${product.name}`,
-// 		description: `${product.description}`,
-// 		openGraph: {
-// 			title: `${product.name}`,
-// 			description: `${product.description}`,
-// 			type: "website",
-// 			images: [
-// 				{
-// 					url: product.image,
-// 					alt: product.name,
-// 				},
-// 			],
-// 		},
-// 	};
-// };
+	return {
+		title: `${product.name}`,
+		description: `${product.description}`,
+		openGraph: {
+			title: `${product.name}`,
+			description: `${product.description}`,
+			type: "website",
+			images: [
+				{
+					url: product.image,
+					alt: product.name,
+				},
+			],
+		},
+	};
+};
 
 // export const generateStaticParams = async () => {
 // 	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];

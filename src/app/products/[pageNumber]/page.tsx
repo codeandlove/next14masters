@@ -36,8 +36,6 @@ export default async function ProductsListPage({
 		pageNumber: params.pageNumber,
 	})) as ProductItemFragment[];
 
-	
-
 	return (
 		<>
 			<PageTitle>All Products</PageTitle>

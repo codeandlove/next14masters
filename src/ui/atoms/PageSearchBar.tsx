@@ -8,7 +8,7 @@ import { searchAction } from "@/api/search";
 export const PageSearchBar = () => {
 	const router = useRouter();
 	const limit = 2;
-	const time = 500;
+	const time = 1000;
 	let locked = false;
 
 	const applySearchByKeyEnter = async (event: React.KeyboardEvent<HTMLDivElement>) => {

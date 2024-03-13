@@ -77,7 +77,7 @@ export default async function CategoryPage({
 	const paginationLinks: ActiveLinkItemType[] = Array.from(
 		{ length: paginationCount },
 		(_, index) => {
-			return { name: `${index + 1}`, url: `/categories/${params.slug}/${index + 1}`, exact: true };
+			return { name: `${index + 1}`, url: `/categories/${params.slug}/${index + 1}`, exact: false };
 		},
 	);
 
