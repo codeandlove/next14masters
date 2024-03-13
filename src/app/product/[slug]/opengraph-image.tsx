@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import Image from "next/image";
 import { getProductBySlug } from "@/api/graphql";
 import { type ProductItemFragment } from "@/gql/graphql";
 
@@ -25,7 +26,7 @@ export default async function og({ params }: { params: { slug: string } }) {
 				}}
 			>
 				<div tw="w-96 h-96 flex items-center justify-center bg-black mb-4">
-					<img tw="w-96 h-96 object-cover" src={product.image} alt={product.name} />
+					<Image tw="w-96 h-96 object-cover" src={product.image} alt={product.name} />
 				</div>
 				<p tw="font-sans uppercase m-0 p-0 text-3xl leading-4  mb-4">{product.name}</p>
 				<p tw="font-serif m-0 p-0 font-black mb-4 max-w-lg text-center">{product.description}</p>

@@ -1,6 +1,7 @@
 import { getProductsList } from "@/api/graphql";
 import { type ProductItemFragment } from "@/gql/graphql";
 import { PageTitle } from "@/ui/atoms/PageTitle";
+import { CollectionsNavigation } from "@/ui/molecules/CollectionsNavigation";
 import { ProductList } from "@/ui/organisms/ProductList";
 
 export const generateStaticParams = async () => {
@@ -19,6 +20,7 @@ export default async function HomePage() {
 	return (
 		<>
 			<PageTitle>Home Page</PageTitle>
+			<CollectionsNavigation />
 			<ProductList products={products} />
 		</>
 	);

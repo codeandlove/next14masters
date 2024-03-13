@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { Pagination } from "@/ui/molecules/Pagination";
 import { ProductList } from "@/ui/organisms/ProductList";
 import type { ActiveLinkItemType, SortByKey } from "@/ui/types";
@@ -19,27 +18,19 @@ const paginationLinks: ActiveLinkItemType[] = Array.from(
 export default async function SearchPage({
 	searchParams,
 }: {
-	searchParams: { query: string, sortby?: SortByKey};
+	searchParams: { query: string; sortby?: SortByKey };
 }) {
-	let products: ProductItemFragment[] | undefined;
-
-	try {
-		products = (await getProductsList({
-			pageNumber: "1",
-			search: searchParams.query,
-		})) as ProductItemFragment[];
-	} catch (error) {
-		return <p>There was an error fetching the products.</p>;
-	}
+	const products = (await getProductsList({
+		pageNumber: "1",
+		search: searchParams.query,
+	})) as ProductItemFragment[];
 
 	return (
 		<>
 			<PageTitle>{searchParams.query ? `Search results` : `All products`}</PageTitle>
 			<SortBy />
-			<Suspense>
-				{products && <ProductList products={products} sortby={searchParams.sortby || undefined} />}
-				<Pagination links={paginationLinks} />
-			</Suspense>
+			{products && <ProductList products={products} sortby={searchParams.sortby || undefined} />}
+			<Pagination links={paginationLinks} />
 		</>
 	);
 }
