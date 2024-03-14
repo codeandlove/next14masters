@@ -6,9 +6,11 @@ import { sortByKey } from "@/ui/utils";
 export const ProductList = ({
 	products,
 	sortby,
+	showDescription
 }: {
 	products: ProductItemFragment[];
 	sortby?: SortByKey;
+	showDescription?: boolean;
 }) => {
 	let resultProducts = products;
 	if (sortby) {
@@ -22,7 +24,7 @@ export const ProductList = ({
 		>
 			{resultProducts &&
 				resultProducts.map((product) => {
-					return <ProductListItem key={product.id} product={product} />;
+					return <ProductListItem key={product.id} product={product} showDescription={showDescription} />;
 				})}
 		</ul>
 	);

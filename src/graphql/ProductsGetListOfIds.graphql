@@ -1,0 +1,11 @@
+query ProductsGetListOfIds($skip: Int!, $take: Int!, $ids: [ID!]!) {
+	products(take: $take, skip: $skip, ids: $ids) {
+		data {
+			...ProductItem
+		}
+		meta {
+			total
+			count
+		}
+	}
+}

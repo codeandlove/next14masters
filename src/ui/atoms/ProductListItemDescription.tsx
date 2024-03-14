@@ -3,9 +3,11 @@ import type { ProductItemFragment } from "@/gql/graphql";
 import { formatPrice } from "@/ui/utils";
 
 export const ProductListItemDescription = ({
-	product: { categories, collections, name, price, rating, status },
+	product: { categories, collections, name, price, rating, status, longDescription },
+	showDescription,
 }: {
 	product: ProductItemFragment;
+	showDescription?: boolean;
 }) => {
 	const inStock: boolean = status === "INSTOCK";
 	return (
@@ -30,15 +32,16 @@ export const ProductListItemDescription = ({
 			<div className="mt-2 w-full justify-between space-y-3">
 				<div className="grid grid-cols-3">
 					{collections && <span className="text-sm text-slate-800">{collections[0]?.name}</span>}
-					<span
-						className="col-span-2 w-full text-right text-sm font-bold text-slate-600"
-					>
+					<span className="col-span-2 w-full text-right text-sm font-bold text-slate-600">
 						<span className="sr-only" data-testid="product-price">
 							{price}
 						</span>
 						{formatPrice(price)}
 					</span>
 				</div>
+			</div>
+			<div className="mt-2 w-full justify-between space-y-3">
+				{showDescription && <div className="text-xs text-slate-400">{longDescription}</div>}
 			</div>
 		</div>
 	);

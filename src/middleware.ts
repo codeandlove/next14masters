@@ -14,6 +14,7 @@ export default authMiddleware({
 		"/products/(.*)",
 		"/privacy-policy",
 		"/terms-of-use",
+		"/api/(.*)",
 	],
 	// Routes that can always be accessed, and have
 	// no authentication information

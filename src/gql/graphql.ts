@@ -219,6 +219,7 @@ export type QueryProductArgs = {
 
 
 export type QueryProductsArgs = {
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   order?: SortDirection;
   orderBy?: ProductsSortBy;
   search?: InputMaybe<Scalars['String']['input']>;
@@ -386,6 +387,15 @@ export type ProductsGetListQueryVariables = Exact<{
 
 
 export type ProductsGetListQuery = { products: { data: Array<{ ' $fragmentRefs'?: { 'ProductItemFragment': ProductItemFragment } }>, meta: { total: number, count: number } } };
+
+export type ProductsGetListOfIdsQueryVariables = Exact<{
+  skip: Scalars['Int']['input'];
+  take: Scalars['Int']['input'];
+  ids: Array<Scalars['ID']['input']> | Scalars['ID']['input'];
+}>;
+
+
+export type ProductsGetListOfIdsQuery = { products: { data: Array<{ ' $fragmentRefs'?: { 'ProductItemFragment': ProductItemFragment } }>, meta: { total: number, count: number } } };
 
 export type ProductsSearchQueryVariables = Exact<{
   skip: Scalars['Int']['input'];
@@ -854,6 +864,37 @@ export const ProductsGetListDocument = new TypedDocumentString(`
     slug
   }
 }`) as unknown as TypedDocumentString<ProductsGetListQuery, ProductsGetListQueryVariables>;
+export const ProductsGetListOfIdsDocument = new TypedDocumentString(`
+    query ProductsGetListOfIds($skip: Int!, $take: Int!, $ids: [ID!]!) {
+  products(take: $take, skip: $skip, ids: $ids) {
+    data {
+      ...ProductItem
+    }
+    meta {
+      total
+      count
+    }
+  }
+}
+    fragment ProductItem on Product {
+  id
+  name
+  slug
+  description
+  longDescription
+  price
+  image
+  status
+  rating
+  categories {
+    name
+    slug
+  }
+  collections {
+    name
+    slug
+  }
+}`) as unknown as TypedDocumentString<ProductsGetListOfIdsQuery, ProductsGetListOfIdsQueryVariables>;
 export const ProductsSearchDocument = new TypedDocumentString(`
     query ProductsSearch($skip: Int!, $take: Int!, $search: String) {
   products(take: $take, skip: $skip, search: $search) {
