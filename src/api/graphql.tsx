@@ -36,6 +36,8 @@ import {
 	PlaceOrderDocument,
 	type GetOrderListQuery,
 	GetOrderListDocument,
+	type ProductsGetListOfIdsQuery,
+	ProductsGetListOfIdsDocument,
 } from "@/gql/graphql";
 import { sortByKey } from "@/ui/utils";
 
@@ -87,6 +89,24 @@ export const getProductsList = async (params: { pageNumber: string; search?: str
 	const productGraphqlResponse: ProductsGetListQuery = await executeGraphql({
 		query: ProductsGetListDocument,
 		variables: { take: take, skip: (Number(params.pageNumber) - 1) * take, search: params.search },
+	});
+
+	return sortByKey(productGraphqlResponse.products.data, "id");
+};
+
+export const getProductsAll = async () => {
+	const productGraphqlResponse: ProductsGetListQuery = await executeGraphql({
+		query: ProductsGetListDocument,
+		variables: { take: 50, skip: 0 },
+	});
+
+	return sortByKey(productGraphqlResponse.products.data, "id");
+};
+
+export const getProductsListOfIds = async ({ ids }: { ids: ProductItemFragment["id"][] }) => {
+	const productGraphqlResponse: ProductsGetListOfIdsQuery = await executeGraphql({
+		query: ProductsGetListOfIdsDocument,
+		variables: { take: ids.length, skip: 0, ids: [...ids] },
 	});
 
 	return sortByKey(productGraphqlResponse.products.data, "id");
@@ -254,19 +274,18 @@ export const removeOrderItem = async ({
 	return graphqlResponse.removeOrderItem;
 };
 
-
 export const placeOrder = async ({
 	orderId,
 	email,
 	userId,
 	sessionId,
-	totalAmount
+	totalAmount,
 }: {
 	orderId: string;
 	email: string;
 	userId: string | null;
 	sessionId: string | null;
-	totalAmount: number
+	totalAmount: number;
 }) => {
 	const graphqlResponse: PlaceOrderMutation = await executeGraphql({
 		query: PlaceOrderDocument,
@@ -275,13 +294,12 @@ export const placeOrder = async ({
 			email: email,
 			userId: userId,
 			sessionId: sessionId,
-			totalAmount: totalAmount
+			totalAmount: totalAmount,
 		},
 	});
 
 	return graphqlResponse.placeOrder;
 };
-
 
 export const createReview = async ({
 	productId,

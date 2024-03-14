@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { type Metadata } from "next";
+import { Suspense } from "react";
 import { getProductsList, getProductBySlug } from "@/api/graphql";
 import { RelatedProducts } from "@/ui/organisms/RelatedProducts";
 import { ProductCoverImage } from "@/ui/atoms/ProductCoverImage";
@@ -11,6 +12,7 @@ import { AddToCartButton } from "@/ui/atoms/AddToCartButton";
 import { addToCart } from "@/ui/actions";
 import { getOrCreateCart } from "@/api/cart";
 import { ProductReviews } from "@/ui/molecules/ProductReviews";
+import { AiRelatedProducts } from "@/ui/organisms/AiRelatedProducts";
 
 export const generateMetadata = async ({
 	params,
@@ -95,6 +97,9 @@ export default async function ProductPage({
 			</div>
 			<RelatedProducts products={relatedProducts} limit={8} />
 			<ProductReviews productId={product.id} />
+			<Suspense fallback={<div>Loading...</div>}>
+				<AiRelatedProducts description={product.longDescription} />
+			</Suspense>
 		</section>
 	);
 }
