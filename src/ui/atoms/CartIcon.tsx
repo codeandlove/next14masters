@@ -15,7 +15,7 @@ export async function CartIcon() {
 
 	return (
 		<div className="mx-4">
-			<Link className="flex w-20 items-center" href="/minicart">
+			<Link className="flex items-center" href={{ pathname: "/minicart" }}>
 				<ShoppingBag className="mr-1" /> ({quantity})
 			</Link>
 		</div>

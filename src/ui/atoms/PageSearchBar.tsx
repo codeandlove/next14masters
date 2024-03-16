@@ -40,8 +40,8 @@ export const PageSearchBar = () => {
 	};
 
 	return (
-		<div className="ml-auto mr-2 flex items-center justify-between" aria-label="search">
-			<form action={searchAction} className="relative flex items-center space-x-4">
+		<div className="mx-4 flex items-center justify-between md:ml-auto md:mr-4" aria-label="search">
+			<form action={searchAction} className="relative flex items-center">
 				<label htmlFor="search" className="sr-only">
 					Search products...
 				</label>
