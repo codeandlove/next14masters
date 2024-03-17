@@ -19,6 +19,7 @@ const nextConfig = {
 	},
 	env: {
 		GRAPHQL_URL: process.env.GRAPHQL_URL,
+		APP_URL: process.env.APP_URL,
 	},
 	async redirects() {
 		return [
