@@ -1,3 +1,5 @@
+"use client";
+
 import { getAiProductsRelated } from "@/api/ai";
 import { getProductsListOfIds } from "@/api/graphql";
 import { type ProductItemFragment } from "@/gql/graphql";
@@ -13,7 +15,9 @@ export const AiRelatedProducts = async ({ description }: { description: string }
 	return (
 		<section>
 			<div className="w-full" data-testid="related-products">
-				<h2 className="mb-4 text-center text-xl font-bold leading-snug">Ai Product Recomendations</h2>
+				<h2 className="mb-4 text-center text-xl font-bold leading-snug">
+					Ai Product Recomendations
+				</h2>
 				{aiRelatedProducts && <ProductList products={aiRelatedProducts} showDescription={true} />}
 			</div>
 		</section>

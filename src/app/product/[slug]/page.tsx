@@ -38,14 +38,12 @@ export const generateMetadata = async ({
 	};
 };
 
-// export const generateStaticParams = async () => {
-// 	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
-// 	return products.map((product) => ({
-// 		params: {
-// 			slug: product.slug,
-// 		},
-// 	}));
-// };
+export const generateStaticParams = async () => {
+	const products = (await getProductsList({ pageNumber: "1" })) as ProductItemFragment[];
+	return products.map((product) => ({
+		slug: product.slug,
+	}));
+};
 
 export default async function ProductPage({
 	params,

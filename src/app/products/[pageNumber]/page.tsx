@@ -19,9 +19,7 @@ const paginationLinks: ActiveLinkItemType[] = Array.from(
 
 // export const generateStaticParams = async () => {
 // 	return paginationLinks.map((_, index) => ({
-// 		params: {
-// 			pageNumber: index + 1,
-// 		},
+// 		pageNumber: index + 1,
 // 	}));
 // };
 
