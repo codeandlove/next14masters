@@ -45,12 +45,18 @@ export default async function RootLayout({
 			<html lang="en">
 				<body className={inter.className}>
 					<header className="pb-24">
-						<div className="fixed inset-x-0 top-0 z-10 flex h-24 items-center bg-white shadow-2xl shadow-black/10">
+						<div className="top:0 fixed inset-x-0 top-0 z-10 flex h-24 items-center bg-white shadow-2xl shadow-black/10">
 							<div className="container mx-auto flex items-center justify-between">
-								<Logo />
-								<PageNavigation links={pageLinks} />
-								<PageSearchBar />
-								<div className="ml-4 mr-2">
+								<div className="order-2 lg:order-1">
+									<Logo />
+								</div>
+								<div className="order-1 lg:order-2">
+									<PageNavigation links={pageLinks} />
+								</div>
+								<div className="order-3 flex items-center space-x-4 lg:order-3 lg:ml-auto lg:space-x-8">
+									<PageSearchBar />
+								</div>
+								<div className="mx- order-4 whitespace-nowrap">
 									<SignedIn>
 										<UserButton userProfileMode="navigation" userProfileUrl="/user-profile" />
 									</SignedIn>
@@ -58,9 +64,11 @@ export default async function RootLayout({
 										<SignInButton />
 									</SignedOut>
 								</div>
-								<Suspense>
-									<CartIcon />
-								</Suspense>
+								<div className="order-5">
+									<Suspense>
+										<CartIcon />
+									</Suspense>
+								</div>
 							</div>
 						</div>
 					</header>
