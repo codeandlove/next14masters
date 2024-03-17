@@ -69,7 +69,7 @@ export const handlePaymentAction = async (formData: FormData) => {
 			typescript: true,
 		});
 
-		const websiteUrl = process.env.WEBSITE_URL || "http://localhost:3000";
+		const websiteUrl = process.env.APP_URL;
 
 		const checkoutSession = await stripe.checkout.sessions.create({
 			payment_method_types: ["card"],
